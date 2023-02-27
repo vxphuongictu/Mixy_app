@@ -98,6 +98,9 @@ class _OrderDetails extends State<OrderDetails>
             ),
             this.information_title(title: "Your product details { order ID }"),
             this.overflowBox(myWidget: this.listProductDetails(), height: this.boxProductHeight),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .02,
+            ),
             this.requestCancel(),
           ],
         ),
@@ -198,24 +201,21 @@ class _OrderDetails extends State<OrderDetails>
 
   Widget requestCancel()
   {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: GestureDetector(
-        onTap: () {
-          print("cancel");
-        },
-        child: this.overflowBox(
-          height: 60.0,
-          myWidget: Center(
-            child: MyText(
-              text: "Request Cancellation",
-              align: TextAlign.center,
-              color: cnf.wcWhiteText,
-              fontWeight: FontWeight.w900,
-              fontSize: 15.0,
-            ),
-          )
-        ),
+    return GestureDetector(
+      onTap: () {
+        print("cancel");
+      },
+      child: this.overflowBox(
+        height: 60.0,
+        myWidget: Center(
+          child: MyText(
+            text: "Request Cancellation",
+            align: TextAlign.center,
+            color: cnf.wcWhiteText,
+            fontWeight: FontWeight.w900,
+            fontSize: 15.0,
+          ),
+        )
       ),
     );
   }

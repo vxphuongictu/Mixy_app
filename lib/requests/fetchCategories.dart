@@ -21,6 +21,7 @@ Future<List<Categories>> fetch_categories() async
     for (var item in data['productCategories']['edges']){
       allCategories.add(Categories.formJson(item['node']));
     }
+    allCategories.sort((a, b) => a.name.length.compareTo(b.name.length));
     return allCategories;
   }
   return allCategories;

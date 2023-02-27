@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_e/core/SharedPreferencesClass.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/provider/ThemeModeProvider.dart';

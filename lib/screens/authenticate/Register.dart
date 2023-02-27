@@ -10,6 +10,7 @@ import 'package:food_e/widgets/MyInput.dart';
 import 'package:food_e/widgets/MyRichText.dart';
 import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/requests/register.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:provider/provider.dart';
 
 
@@ -143,9 +144,15 @@ class _Register extends State<Register>
           padding: EdgeInsets.only(bottom: this._distanceOfInput),
           child: MyInput(
             title: "PHONE",
+            maxLength: 10,
             placeholder: "What is your phone number?",
             textController: this.phone,
             isNumber: true,
+            onChanged: (value) {
+              if (this.phone.text.length < 10) {
+
+              }
+            },
           ),
         ),
         Padding(

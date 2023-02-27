@@ -1,3 +1,4 @@
+import 'package:food_e/functions/products/removeHtmlTags.dart';
 
 class ProductDetails {
   String ? name;
@@ -16,9 +17,9 @@ class ProductDetails {
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) {
     return ProductDetails(
-      title: json['title'],
-      name: json['name'],
-      content: json['content'],
+      title: removeHtmlTags(json['title']),
+      name: removeHtmlTags(json['name']),
+      content: removeHtmlTags(json['content']),
       price: json['price'],
       galleryImages: json['galleryImages']['nodes']
     );

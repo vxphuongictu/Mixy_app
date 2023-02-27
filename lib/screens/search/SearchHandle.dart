@@ -55,7 +55,15 @@ class _SearchHandle extends State<SearchHandle>
   Widget _focusWidget()
   {
     if (this._response == null) {
-      return Loading();
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * .7,
+        child: Loading(),
+      );
+    } else if (this._response!.isEmpty) {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * .7,
+        child: Image.asset('assets/images/search-not-found.png'),
+      );
     } else {
       return Container(
         width: double.infinity,

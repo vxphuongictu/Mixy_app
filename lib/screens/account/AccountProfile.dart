@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:confirm_dialog/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -78,24 +76,21 @@ class _AccountProfile extends State<AccountProfile>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
-                label: "ACCOUNT AND PROFILE",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-              ),
-              this.delete_account(),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
-              ),
-              this.input_form(),
-              this.change_password(),
-              this.submit_btn()
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: "ACCOUNT AND PROFILE",
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+            ),
+            this.delete_account(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+            ),
+            this.input_form(),
+            this.change_password(),
+            this.submit_btn()
+          ],
         );
       },
     );

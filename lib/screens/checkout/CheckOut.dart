@@ -27,8 +27,8 @@ class CheckOut extends StatefulWidget
 class _CheckOut extends State<CheckOut> {
 
   // define list address
-  String ? _typeAddress;
-  String ? _cardNumber;
+  String ? _typeAddress = "Please select your deliver";
+  String _cardNumber = "Please select your card number";
 
   @override
   void initState() {
@@ -58,6 +58,7 @@ class _CheckOut extends State<CheckOut> {
           appbar: true,
           appbarBgColor: (value.darkmode == true) ? cnf.darkModeColorbg.toColor() : Colors.white,
           screenBgColor: cnf.colorWhite,
+          disabledBodyHeight: true,
           extendBodyBehindAppBar: false,
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
@@ -83,13 +84,14 @@ class _CheckOut extends State<CheckOut> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: MyTitle(
-                  label: "CHECKOUT",
-                  color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                ),
+              MyTitle(
+                label: "CHECKOUT",
+                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
               ),
-              this.checkout()
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .25,
+              ),
+              this.checkout(),
             ],
           ),
         );
@@ -121,29 +123,19 @@ class _CheckOut extends State<CheckOut> {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 50.0),
-              child: details(title: "DELIVER TO", lable: "${this._typeAddress}", onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MyAddress()
-                  )
-              )),
+              child: details(title: "DELIVER TO", lable: "${this._typeAddress}", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddressSetup(title: "Add new address", checkOutTotalPrice: this.widget.totalPrice))))
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 50.0),
-              child: details(title: "PAYMENT METHOD", lable: "${this._cardNumber}", onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MyPaymentMethod()
-                  )
-              )),
+              child: details(title: "PAYMENT METHOD", lable: "${this._cardNumber}", onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentSetup(title: "Add new payment", checkOutTotalPrice: this.widget.totalPrice))))
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop),
               child: LargeButton(
                 onTap: () {
-                  if (this._typeAddress == null) {
+                  if (this._typeAddress == null || this._typeAddress == "Please select your deliver") {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AddressSetup(title: "Add new addresss")));
-                  } else if (this._cardNumber == null) {
+                  } else if (this._cardNumber == null || this._cardNumber == "Please select your card number") {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentSetup(title: "Add new payment")));
                   } else {
                     showModalBottomSheet(
@@ -197,6 +189,7 @@ class _CheckOut extends State<CheckOut> {
                   onTap: onTap,
                   child: MyText(
                     text: "Change",
+                    fontWeight: FontWeight.w900,
                     color: cnf.colorOrange,
                     fontSize: 14.0,
                   ),

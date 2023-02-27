@@ -95,7 +95,7 @@ class _MyDropDownState extends State<MyDropDown>
                         width: 0,
                         color: Colors.transparent
                     ),
-                  )
+                  ),
               ),
               items: this.widget.list,
               onChanged: (String? newValue) {
@@ -104,6 +104,7 @@ class _MyDropDownState extends State<MyDropDown>
                   this.widget.valueSelect = newValue!;
                 });
               },
+              enableFeedback: true,
               icon: Icon(this.widget.dropDownIcon),
               iconEnabledColor: this.widget.dropDownIconColor.toColor(),
               value: (this.widget.valueSelect != null) ? this.widget.valueSelect : this.widget.list.first.value!,

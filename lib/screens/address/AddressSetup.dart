@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_e/core/DatabaseManager.dart';
-import 'package:food_e/core/SharedPreferencesClass.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/models/Address.dart';
@@ -22,7 +22,12 @@ class AddressSetup extends StatefulWidget
 {
 
   String ? title;
-  AddressSetup({this.title});
+  String ? checkOutTotalPrice;
+
+  AddressSetup({
+    this.title,
+    this.checkOutTotalPrice
+  });
 
   @override
   State<AddressSetup> createState() => _AddressSetupState();
@@ -31,6 +36,8 @@ class AddressSetup extends StatefulWidget
 
 class _AddressSetupState extends State<AddressSetup> {
 
+  // current context
+  BuildContext ? myContext;
   final double _distanceOfInput = 30.0;
   final double heightItem   = 50.0;
 
@@ -97,13 +104,14 @@ class _AddressSetupState extends State<AddressSetup> {
   void initState() {
     fetchCountries().then((value) {
       for (var item in value) {
-        this._countryData.add(DropdownMenuItem(child: MyText(text: "${item.common}"),value: "${item.common}"));
+        setState(() {
+          this._countryData.add(DropdownMenuItem(child: MyText(text: "${item.common}"),value: "${item.common}"));
+        });
       }
     });
     if (this.widget.title == null) {
       DatabaseManager().fetchAddress().then((value) {
-        print(value);
-        setState(() {
+        if (value != null && value.isNotEmpty) setState(() {
           this._myAddress = value;
           this._addressLineOne.text = value.addressLineOne!;
           this._addressLineTwo.text = value.addressLineTwo!;
@@ -117,6 +125,7 @@ class _AddressSetupState extends State<AddressSetup> {
 
   @override
   Widget build(BuildContext context) {
+    myContext = context;
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
         return BaseScreen(
@@ -202,6 +211,7 @@ class _AddressSetupState extends State<AddressSetup> {
                     textController: this._zipCode,
                     title: "ZIP CODE",
                     placeholder: "000 - 000",
+                    isNumber: true,
                   ),
                   MyInput(
                     width: MediaQuery.of(context).size.width * 0.42,
@@ -242,7 +252,8 @@ class _AddressSetupState extends State<AddressSetup> {
                       selectPrivateHouse: this.privateHouseSelected,
                       isShipping: this.setShippingAddress,
                       isPickup: this.setPickupAddress,
-                      isDefault: this.setDefaultAddress
+                      isDefault: this.setDefaultAddress,
+                      checkOutTotalPrice: this.widget.checkOutTotalPrice
                   ).then((value) {
                     setState(() {
                       // refresh
@@ -334,59 +345,63 @@ class _AddressSetupState extends State<AddressSetup> {
 
   Widget typeOfLocation()
   {
-    return Row(
-      children: [
-        Expanded(
-          child: MyText(
-            align: TextAlign.start,
-            text: "Type",
-            fontSize: 15.0,
-            color: cnf.colorLightGrayShadow,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 15.0),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                this.partyPlace = !this.partyPlace;
-                if (this.officeSelected == true || this.privateHouseSelected == true) {
-                  this.officeSelected = false;
-                  this.privateHouseSelected = false;
-                }
-              });
-            },
-            child: TypeOfLocation(name: "Party place", isSelected: this.partyPlace),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(right: 15.0),
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                this.officeSelected = !this.officeSelected;
-                if (this.privateHouseSelected == true || this.partyPlace == true) {
-                  this.privateHouseSelected = false;
-                  this.partyPlace = false;
-                }
-              });
-            },
-            child: TypeOfLocation(name: "Office", isSelected: this.officeSelected),
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              this.privateHouseSelected = !this.privateHouseSelected;
-              if (this.officeSelected == true || this.partyPlace == true) {
-                this.officeSelected = false;
-                this.partyPlace = false;
-              }
-            });
-          },
-          child: TypeOfLocation(name: "Private house", isSelected: this.privateHouseSelected),
-        ),
-      ],
+    return Consumer<ThemeModeProvider>(
+      builder: (context, value, child) {
+        return Row(
+          children: [
+            Expanded(
+              child: MyText(
+                align: TextAlign.start,
+                text: "Type",
+                fontSize: 15.0,
+                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(right: 15.0),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    this.partyPlace = !this.partyPlace;
+                    if (this.officeSelected == true || this.privateHouseSelected == true) {
+                      this.officeSelected = false;
+                      this.privateHouseSelected = false;
+                    }
+                  });
+                },
+                child: TypeOfLocation(name: "Party place", isSelected: this.partyPlace),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(right: 15.0),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    this.officeSelected = !this.officeSelected;
+                    if (this.privateHouseSelected == true || this.partyPlace == true) {
+                      this.privateHouseSelected = false;
+                      this.partyPlace = false;
+                    }
+                  });
+                },
+                child: TypeOfLocation(name: "Office", isSelected: this.officeSelected),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  this.privateHouseSelected = !this.privateHouseSelected;
+                  if (this.officeSelected == true || this.partyPlace == true) {
+                    this.officeSelected = false;
+                    this.partyPlace = false;
+                  }
+                });
+              },
+              child: TypeOfLocation(name: "Private house", isSelected: this.privateHouseSelected),
+            ),
+          ],
+        );
+      },
     );
   }
 }

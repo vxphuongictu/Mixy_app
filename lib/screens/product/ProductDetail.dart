@@ -2,7 +2,6 @@ import 'package:banner_carousel/banner_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:food_e/core/DatabaseManager.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/provider/BasketProvider.dart';
 import 'package:food_e/widgets/BaseScreen.dart';
@@ -74,21 +73,10 @@ class _ProductDetailState extends State<ProductDetail>
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
-      appbar: true,
-      appbarBgColor: Colors.transparent,
+      appbar: false,
       screenBgColor: cnf.colorWhite,
       disabledBodyHeight: true,
       scroll: true,
-      leading: ButtonContainer(childWidget: Icon(Icons.keyboard_arrow_left, size: this.appbarIconSize, color: cnf.colorWhite.toColor()), onTap: () => Navigator.pop(context)),
-      actions: ButtonContainer(
-        onTap: () async {
-          await Share.share(this._contentOfShare!, subject: this._titleOfShare);
-        },
-        childWidget: FaIcon(
-            FontAwesomeIcons.list,
-            size: this.appbarIconSize,
-            color: cnf.colorWhite.toColor())
-      ),
       body: _details(),
     );
   }
@@ -112,19 +100,42 @@ class _ProductDetailState extends State<ProductDetail>
           }
           return Column(
             children: [
-              BannerCarousel.fullScreen(
-                banners: listBanner,
-                customizedIndicators: const IndicatorModel.animation(
-                    width: 10,
-                    height: 5,
-                    spaceBetween: 2,
-                    widthAnimation: 20,
-                ),
-                height: 300.0,
-                activeColor: Colors.amberAccent,
-                disableColor: Colors.white,
-                animation: true,
-                indicatorBottom: false,
+              Stack(
+                children: [
+                  BannerCarousel.fullScreen(
+                    banners: listBanner,
+                    customizedIndicators: const IndicatorModel.animation(
+                      width: 10,
+                      height: 5,
+                      spaceBetween: 2,
+                      widthAnimation: 20,
+                    ),
+                    height: 300.0,
+                    activeColor: Colors.amberAccent,
+                    disableColor: Colors.white,
+                    animation: true,
+                    indicatorBottom: false,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: cnf.wcLogoMarginTop, left: cnf.marginScreen, right: cnf.marginScreen),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ButtonContainer(childWidget: Icon(Icons.keyboard_arrow_left, size: this.appbarIconSize, color: cnf.colorWhite.toColor()), onTap: () => Navigator.pop(context)),
+                        ),
+                        ButtonContainer(
+                            onTap: () async {
+                              await Share.share(this._contentOfShare!, subject: this._titleOfShare);
+                            },
+                            childWidget: FaIcon(
+                                FontAwesomeIcons.list,
+                                size: this.appbarIconSize,
+                                color: cnf.colorWhite.toColor())
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
               Container(
                 margin: EdgeInsets.only(left: cnf.wcLogoMarginLeft, right: cnf.wcLogoMarginLeft, top: this.spaceFromTitleToBanner),
@@ -301,7 +312,7 @@ class _ProductDetailState extends State<ProductDetail>
                               productThumbnails: "${data?.galleryImages![0]['sourceUrl']}",
                             ),
                           );
-                          EasyLoading.showSuccess("Added to cart");
+                          EasyLoading.showSuccess("Add to cart");
                         },
                         label: "ADD TO BASKET",
                       )

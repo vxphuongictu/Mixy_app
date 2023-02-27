@@ -68,20 +68,24 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
         return Padding(
           padding: const EdgeInsets.only(top: 50.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              MyTitle(
-                label: "MY PAYMENT METHODS",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-              ),
-              (this._listCard.length > 0) ? this.screen() : Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * .5,
-                margin: const EdgeInsets.only(bottom: cnf.wcDistanceButtonAndText),
-                child: Image.asset("assets/images/no-payment.png"),
-              ),
               SizedBox(
-                height: MediaQuery.of(context).size.height * .1,
+                width: double.infinity,
+                child: MyTitle(
+                  label: "MY PAYMENT METHODS",
+                  align: TextAlign.start,
+                  color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+                ),
+              ),
+              (this._listCard.length > 0) ? Container(
+                alignment: Alignment.bottomCenter,
+                height: MediaQuery.of(context).size.height * .65,
+                child: this.screen(),
+              ) : Container(
+                width: 300.0,
+                height: MediaQuery.of(context).size.height * .65,
+                child: Image.asset("assets/images/no-payment.png", alignment: Alignment.center),
               ),
               LargeButton(
                 label: "ADD NEW PAYMENT METHOD",
@@ -103,82 +107,81 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
   {
     return ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
         itemCount: this._listCard.length,
-        itemBuilder: (context, index) => Slidable(
-            key: UniqueKey(),
-            endActionPane: ActionPane(
-              dismissible: DismissiblePane(
-                onDismissed: () {
-                  EasyLoading.show(status: "Deleting ...");
-                  DatabaseManager().removeItemInCard(id: this._listCard[index]['id']).then((value){
-                    EasyLoading.showSuccess("Done");
-                    setState(() {
-                      DatabaseManager().fetchCard().then((value) {
-                        this._listCard = value;
+        itemBuilder: (context, index) => Padding(
+          padding: EdgeInsets.only(bottom: 50.0),
+          child: Slidable(
+              key: UniqueKey(),
+              endActionPane: ActionPane(
+                dismissible: DismissiblePane(
+                  onDismissed: () {
+                    EasyLoading.show(status: "Deleting ...");
+                    DatabaseManager().removeItemInCard(id: this._listCard[index]['id']).then((value){
+                      EasyLoading.showSuccess("Done");
+                      setState(() {
+                        DatabaseManager().fetchCard().then((value) {
+                          this._listCard = value;
+                        });
                       });
                     });
-                  });
-                },
-              ),
-              motion: const ScrollMotion(),
-              children: const [
-                SlidableAction(
-                  onPressed: null,
-                  backgroundColor: Color(0xFFFE4A49),
-                  foregroundColor: Colors.white,
-                  icon: Icons.delete,
-                  label: 'Delete',
+                  },
                 ),
-              ],
-            ),
-            child: this.detailItem(
-                title: "CASH",
-                titleColor:  (this._listCard[index]['isDefault'] == 1) ? cnf.colorOrange : cnf.colorGray,
-                textColor: cnf.colorGray,
-                textLeft: carNumber("${this._listCard[index]['cardNumber']}"),
-                textRight: "${this._listCard[index]['expiryDate']}"
-            )),
+                motion: const ScrollMotion(),
+                children: const [
+                  SlidableAction(
+                    onPressed: null,
+                    backgroundColor: Color(0xFFFE4A49),
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  ),
+                ],
+              ),
+              child: this.detailItem(
+                  title: "CASH",
+                  titleColor:  (this._listCard[index]['isDefault'] == 1) ? cnf.colorOrange : cnf.colorGray,
+                  textColor: cnf.colorGray,
+                  textLeft: carNumber("${this._listCard[index]['cardNumber']}"),
+                  textRight: "${this._listCard[index]['expiryDate']}"
+              )),
+        ),
       );
   }
 
   Widget detailItem({String ? title, String ? titleColor, String ? textColor, String ? textLeft, String ? textRight})
   {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 50.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
-            child: MyTitle(
-              label: title!,
-              color: titleColor!,
-              fontSize: 12.0,
-              fontWeight: FontWeight.w900,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: MyTitle(
+            label: title!,
+            color: titleColor!,
+            fontSize: 12.0,
+            fontWeight: FontWeight.w900,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MyText(
-                text: (textLeft != null) ? textLeft : '',
-                fontWeight: FontWeight.w900,
-                fontSize: 14.0,
-                align: TextAlign.start,
-                color: textColor!,
-              ),
-              MyText(
-                text: (textRight != null) ? textRight : '',
-                fontWeight: FontWeight.w900,
-                fontSize: 14.0,
-                align: TextAlign.start,
-                color: textColor,
-              )
-            ],
-          )
-        ],
-      ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MyText(
+              text: (textLeft != null) ? textLeft : '',
+              fontWeight: FontWeight.w900,
+              fontSize: 14.0,
+              align: TextAlign.start,
+              color: textColor!,
+            ),
+            MyText(
+              text: (textRight != null) ? textRight : '',
+              fontWeight: FontWeight.w900,
+              fontSize: 14.0,
+              align: TextAlign.start,
+              color: textColor,
+            )
+          ],
+        )
+      ],
     );
   }
 }

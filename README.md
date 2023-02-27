@@ -14,3 +14,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+intl_phone_number_input: ^0.7.3
+html: ^0.15.0
+flutter_form_builder: ^7.8.0
+mirai_dropdown_menu: ^0.0.6+2

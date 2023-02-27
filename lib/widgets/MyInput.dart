@@ -36,6 +36,7 @@ class MyInput extends StatefulWidget
   FocusNode ? focusNode;
   String borderColor;
   VoidCallback ? onEditingComplete;
+  int ? maxLength;
 
   MyInput({
     this.title="",
@@ -66,7 +67,8 @@ class MyInput extends StatefulWidget
     this.textInputAction=TextInputAction.done,
     this.focusNode,
     this.borderColor=cnf.colorGray,
-    this.onEditingComplete=null
+    this.onEditingComplete=null,
+    this.maxLength,
   });
 
   @override
@@ -98,6 +100,7 @@ class _MyInputState extends State<MyInput> {
         SizedBox(
           width: this.widget.width,
           child: TextField(
+            maxLength: this.widget.maxLength,
             textInputAction: this.widget.textInputAction,
             autofocus: this.widget.autofocus,
             focusNode: this.widget.focusNode,
@@ -108,6 +111,7 @@ class _MyInputState extends State<MyInput> {
             obscureText: this.widget.hiddenText,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
+              counterText: '',
               hintText: this.widget.placeholder,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(this.widget.radius),

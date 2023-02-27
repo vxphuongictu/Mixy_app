@@ -12,7 +12,7 @@ add({required int currentNumber})
 remove({required int currentNumber})
 {
   int ? newNumber;
-  if (currentNumber > 1){
+  if (currentNumber >= 1){
     newNumber = currentNumber - 1;
   }
   return (newNumber != null) ? newNumber : currentNumber;

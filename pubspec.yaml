@@ -53,6 +53,10 @@ dependencies:
   provider: ^6.0.1
   font_awesome_flutter: ^10.3.0
   banner_carousel: ^1.2.1
+  intl_phone_number_input: ^0.7.2
+  html: ^0.15.0
+  flutter_form_builder: ^7.8.0
+  mirai_dropdown_menu: ^0.0.6+2
 
 
   # The following adds the Cupertino Icons font to your application.

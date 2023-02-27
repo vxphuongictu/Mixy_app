@@ -32,8 +32,7 @@ class SharedPreferencesClass
     } catch (e) {
       // if unavailable history
     }
-
-    temp.add(searchText.toString());
+    if (temp.contains(searchText.toString()) == false) temp.add(searchText.toString());
     prefs.setStringList('search', temp);
   }
 

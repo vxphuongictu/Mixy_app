@@ -16,11 +16,11 @@ Future<dynamic> fetchCountries() async {
     throw Exception('Failed to fetch data');
   }
   final data = json.decode(response.body);
-  int count = 0;
   for (var item in data) {
-    count++;
-    listCountries.add(Country.fromJson(item['name']));
-    if (count > 10) break;
+    if (item['name']['common'].toString().length < 20) {
+      listCountries.add(Country.fromJson(item['name']));
+    }
   }
+  listCountries.sort((a, b) => a.common.compareTo(b.common));
   return listCountries;
 }

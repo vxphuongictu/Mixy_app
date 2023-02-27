@@ -97,7 +97,7 @@ class _Search extends State<Search>
     if (recentText != null) {
       setState(() {
         this.searchText.text = recentText;
-        this.searchWasClicked = false;
+        this.searchWasClicked = true;
         this.clearButton = true;
       });
     }

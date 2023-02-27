@@ -6,6 +6,7 @@ import 'package:food_e/models/Address.dart';
 import 'package:food_e/screens/Payment/MyPaymentMethod.dart';
 import 'package:food_e/screens/address/AddressSetup.dart';
 import 'package:food_e/screens/address/MyAddress.dart';
+import 'package:food_e/screens/checkout/CheckOut.dart';
 
 handleAddAddress({
   required BuildContext context,
@@ -20,7 +21,8 @@ handleAddAddress({
   bool selectPartyPlace = false,
   bool isDefault = false,
   bool isPickup = false,
-  bool isShipping = false
+  bool isShipping = false,
+  String ? checkOutTotalPrice
   }) async {
 
   String type = "";
@@ -57,8 +59,14 @@ handleAddAddress({
       isShipping: isShipping,
       type: type
     ));
-    (screenTitle == null) ? Navigator.push(context,
-    MaterialPageRoute(builder: (context) => MyPaymentMethod())) : Navigator.push(context,
-    MaterialPageRoute(builder: (context) => MyAddress()));
+    if (screenTitle == null) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MyPaymentMethod()));
+    } else {
+      if (checkOutTotalPrice != null) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOut(totalPrice: checkOutTotalPrice!)));
+      } else {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress()));
+      }
+    }
   }
 }

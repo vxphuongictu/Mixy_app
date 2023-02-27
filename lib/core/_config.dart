@@ -14,6 +14,8 @@ const String colorLightGrayShadow = "#bfbfbf";
 const String colorGrayInputBg = "#f4f4f4";
 const String colorLightRed = "#ff8080";
 const String colorGreen = "#4fe178";
+const String colorBlue = "#0066ff";
+const String colorGray20 = "#f2f2f2";
 
 /* global */
 bool darkMode = false;

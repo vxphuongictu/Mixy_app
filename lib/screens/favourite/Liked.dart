@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/models/Cart.dart';
 import 'package:food_e/models/Favourites.dart';
 import 'package:food_e/provider/BasketProvider.dart';
@@ -130,7 +129,7 @@ class _Liked extends State<Liked>
                           thumbnails: Image.network(_item[index].thumbnailFavourite.toString()),
                           price: "${_item[index].priceFavourite}",
                           basketOnClick: () async {
-                            EasyLoading.showSuccess("Added to cart");
+                            EasyLoading.showSuccess("Add to cart");
                             Provider.of<BasketProvider>(context, listen: false).addCart(
                                 Cart(
                                     productID: _item[index].idFavourite.toString(),

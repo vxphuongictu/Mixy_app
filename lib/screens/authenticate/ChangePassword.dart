@@ -71,22 +71,19 @@ class _ChangePassword extends State<ChangePassword>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
-                label: "CHANGE PASSWORD",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .3,
-              ),
-              this.form_input(),
-              this.submit_button()
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: "CHANGE PASSWORD",
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .23,
+            ),
+            this.form_input(),
+            this.submit_button()
+          ],
         );
       },
     );

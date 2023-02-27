@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/provider/LikedProvider.dart';
 import 'package:food_e/provider/ThemeModeProvider.dart';
 import 'package:food_e/screens/Payment/MyPaymentMethod.dart';
@@ -29,6 +31,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'provider/BasketProvider.dart';
+import 'core/_config.dart' as cnf;
 
 
 void main() async {
@@ -76,6 +79,11 @@ class _foodApp extends State<foodApp>
         theme: ThemeData(
             appBarTheme: const AppBarTheme(
               systemOverlayStyle: SystemUiOverlayStyle.dark,
+            ),
+            cupertinoOverrideTheme: CupertinoThemeData(
+                textTheme: CupertinoTextThemeData(
+                  pickerTextStyle: TextStyle(color: cnf.colorBlack.toColor(), fontSize: 23),
+                ),
             )
         ),
         debugShowCheckedModeBanner: false,

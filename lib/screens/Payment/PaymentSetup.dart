@@ -16,8 +16,12 @@ class PaymentSetup extends StatefulWidget
 {
 
   String ? title;
+  String ? checkOutTotalPrice;
 
-  PaymentSetup({this.title});
+  PaymentSetup({
+    this.title,
+    this.checkOutTotalPrice
+  });
 
   @override
   State<PaymentSetup> createState() => _PaymentSetupState();
@@ -77,26 +81,21 @@ class _PaymentSetupState extends State<PaymentSetup> {
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MyTitle(
-                  label: (this.widget.title == null) ? "PAYMENT SETUP" : this.widget.title!,
-                  color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                ),
-                AnimatedScale(
-                  scale: this._scale,
-                  duration: const Duration(milliseconds: 500),
-                  child: Container(
-                    child: Image.asset("assets/images/payment.png"),
-                  ),
-                ),
-                this.formInput(context),
-              ],
-            ),
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MyTitle(
+                label: (this.widget.title == null) ? "PAYMENT SETUP" : this.widget.title!,
+                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+              ),
+              AnimatedScale(
+                scale: this._scale,
+                duration: const Duration(milliseconds: 200),
+                child: Image.asset("assets/images/payment.png"),
+              ),
+              this.formInput(context),
+            ],
           ),
         );
       },
@@ -125,7 +124,7 @@ class _PaymentSetupState extends State<PaymentSetup> {
             ),
             SwitchGroup(callback: setAsDefault, label: "Set as default", lableColor: (value.darkmode==true) ? cnf.colorWhite : null,isOn: setAsDefaultSwitch),
             Padding(
-              padding: const EdgeInsets.only(top: cnf.wcDistanceButtonAndText),
+              padding: const EdgeInsets.only(top: cnf.wcLogoMarginTop, bottom: cnf.wcLogoMarginTop),
               child: LargeButton(
                 onTap: () => handleAddCard(
                     context: context,
@@ -133,7 +132,8 @@ class _PaymentSetupState extends State<PaymentSetup> {
                     cvv: this.card?.cvc,
                     expiryDate: "${this.card?.expiryMonth}/${this.card?.expiryYear}",
                     cardNumber: this.card?.number,
-                    isDefault: this.setAsDefaultSwitch
+                    isDefault: this.setAsDefaultSwitch,
+                    checkOutTotalPrice: this.widget.checkOutTotalPrice
                 ),
                 label: "Add card",
               ),

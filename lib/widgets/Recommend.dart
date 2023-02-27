@@ -8,7 +8,6 @@ import 'package:food_e/screens/product/ListProducts.dart';
 import 'package:food_e/screens/product/ProductDetail.dart';
 import 'package:food_e/widgets/ItemBox.dart';
 import 'package:food_e/widgets/MyText.dart';
-import 'package:food_e/core/DatabaseManager.dart';
 import 'package:provider/provider.dart';
 
 
@@ -97,7 +96,7 @@ class _Recommend extends State<Recommend>
                         MaterialPageRoute(builder: (context) => ProductDetail(id: this.widget.products[index].id)),
                       ),
                       cartCallback: () {
-                        EasyLoading.showSuccess("Added to cart");
+                        EasyLoading.showSuccess("Add to cart");
                         context.read<BasketProvider>().addCart(
                           Cart(
                             productID: this.widget.products[index].id,
