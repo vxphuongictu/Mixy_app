@@ -41,7 +41,7 @@ class _Basket extends State<Basket>
       scroll: false,
       screenBgColor: cnf.colorWhite,
       extendBodyBehindAppBar: false,
-      body: (Provider.of<BasketProvider>(context, listen: false).totalPrice().toInt() > 0) ? _basketScreen() : _cartEmty()
+      body: _basketScreen()
     );
   }
 
@@ -85,61 +85,79 @@ class _Basket extends State<Basket>
     return Consumer<BasketProvider>(
       builder: (context, value, child) {
         List<Cart> listCartItem = value.cart;
-        return Padding(
-          padding: const EdgeInsets.only(top: cnf.wcLogoMarginTop),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .05,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: cnf.wcLogoMarginLeft, right: cnf.wcLogoMarginLeft),
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Consumer<ThemeModeProvider>(
-                          builder: (context, value, child) => MyTitle(
-                            label: 'BASKET',
-                            color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+        if (listCartItem.length > 0) {
+          return Padding(
+            padding: const EdgeInsets.only(top: cnf.wcLogoMarginTop),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * .05,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: cnf.wcLogoMarginLeft,
+                        right: cnf.wcLogoMarginLeft),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Consumer<ThemeModeProvider>(
+                            builder: (context, value, child) =>
+                                MyTitle(
+                                  label: 'BASKET',
+                                  color: (value.darkmode == true) ? cnf
+                                      .colorWhite : cnf.colorBlack,
+                                ),
                           ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              EasyLoading.show(status: "Waiting ...");
-                              Provider.of<BasketProvider>(context, listen: false).clearCart();
-                              EasyLoading.showSuccess("Done");
-                            },
-                            child: MyText(
-                              text: "Clear All",
-                              color: cnf.colorGray,
-                              align: TextAlign.right,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w900,
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                EasyLoading.show(status: "Waiting ...");
+                                Provider.of<BasketProvider>(
+                                    context, listen: false).clearCart();
+                                EasyLoading.showSuccess("Done");
+                              },
+                              child: MyText(
+                                text: "Clear All",
+                                color: cnf.colorGray,
+                                align: TextAlign.right,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
-                          ),
-                        )
-                      ]
+                          )
+                        ]
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .6,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
-                  child: this.listCart(listCartItem),
+                SizedBox(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * .6,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: cnf.marginScreen, right: cnf.marginScreen),
+                    child: this.listCart(listCartItem),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .2,
-                child: SizedBox(
-                  child: this.details(),
+                SizedBox(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * .2,
+                  child: SizedBox(
+                    child: this.details(),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        } else {
+          return _cartEmty();
+        }
       },
     );
   }

@@ -6,7 +6,6 @@ import 'package:food_e/models/Favourites.dart';
 class LikedProvider with ChangeNotifier
 {
   List<Favourites> _liked = [];
-
   List<Favourites> get liked => _liked;
 
   Future<void> like({required Favourites item}) async {
@@ -29,11 +28,12 @@ class LikedProvider with ChangeNotifier
 
   Future<void> clearLiked() async {
     await DatabaseManager().clearFavourite();
-    _liked.clear();
+    _liked = [];
     this.fetchLiked();
   }
 
   Future<void> fetchLiked() async {
+    _liked = [];
     DatabaseManager().fetchFavouriteItem().then((value){
       value.forEach((element) {
         _liked.add(
@@ -51,6 +51,7 @@ class LikedProvider with ChangeNotifier
 
   checkFavourite(String id) async {
     bool _isFavourite = await DatabaseManager().checkFavourite(id: id);
+    notifyListeners();
     return _isFavourite;
   }
 

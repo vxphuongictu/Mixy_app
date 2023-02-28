@@ -65,21 +65,18 @@ class _OrderHistory extends State<OrderHistory>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop),
-                child: MyTitle(
-                  label: "ORDER HISTORY",
-                  color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop),
+              child: MyTitle(
+                label: "ORDER HISTORY",
+                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
               ),
-              this.list_order_item()
-            ],
-          ),
+            ),
+            this.list_order_item()
+          ],
         );
       },
     );

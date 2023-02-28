@@ -64,48 +64,44 @@ class _MyAddress extends State<MyAddress> {
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Container(
-          height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
-                label: "MY ADDRESSES",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                align: TextAlign.start,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: "MY ADDRESSES",
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+              align: TextAlign.start,
+            ),
+            (this.address.isNotEmpty) ?
+            Container(
+              alignment: Alignment.bottomCenter,
+              padding: const EdgeInsets.only(bottom: 20.0),
+              height: MediaQuery.of(context).size.height * .65,
+              child: this.screen(),
+            ) : Expanded(
+              child: Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(bottom: cnf.wcDistanceButtonAndText),
+                  child: Image.asset(
+                      "assets/images/location.png",
+                      fit: BoxFit.cover,
+                      width: 250.0,
+                  )
               ),
-              (this.address.isNotEmpty) ?
-              Container(
-                alignment: Alignment.bottomCenter,
-                padding: const EdgeInsets.only(bottom: 20.0),
-                height: MediaQuery.of(context).size.height * .65,
-                child: this.screen(),
-              ) : Expanded(
-                child: Container(
-                    width: double.infinity,
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.only(bottom: cnf.wcDistanceButtonAndText),
-                    child: Image.asset(
-                        "assets/images/location.png",
-                        fit: BoxFit.cover,
-                        width: 250.0,
-                    )
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop),
+              child: LargeButton(
+                onTap: () =>
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>
+                          AddressSetup(title: "Add new address"),
+                    )),
+                label: "ADD NEW ADDRESS",
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop),
-                child: LargeButton(
-                  onTap: () =>
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) =>
-                            AddressSetup(title: "Add new address"),
-                      )),
-                  label: "ADD NEW ADDRESS",
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         );
       },
     );

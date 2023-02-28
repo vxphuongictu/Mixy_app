@@ -98,21 +98,18 @@ class _Register extends State<Register>
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
         return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(bottom: cnf.wcDistanceButtonAndText),
-                  child: MyTitle(
-                    label: "REGISTER",
-                    color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                  ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: cnf.wcDistanceButtonAndText),
+                child: MyTitle(
+                  label: "REGISTER",
+                  color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
                 ),
-                this.registerForm()
-              ],
-            ),
+              ),
+              this.registerForm()
+            ],
           ),
         );
       },

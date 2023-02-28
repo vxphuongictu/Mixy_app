@@ -109,33 +109,33 @@ class _EmailSent extends State<EmailSent>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
-                label: "EMAIL SENT",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-              ),
-              Padding(
-                  padding: EdgeInsets.zero,
-                  child: MyRichText(
-                    firstText: "We’ve sent you an email at ",
-                    firstTextColor: cnf.colorGray,
-                    secondText: "${this.widget.email} ",
-                    secondTextColor: cnf.colorMainStreamBlue,
-                    thirdText: "for verification. Check your email for the verification link.",
-                    thirdTextColor: cnf.colorGray,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500,
-                    fontfamily: "Poppins",
-                  )
-              ),
-              Expanded(child: Image.asset("assets/images/email_has_been_sent.png")),
-              this.emailSentScreen()
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: "EMAIL SENT",
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+            ),
+            Padding(
+                padding: EdgeInsets.zero,
+                child: MyRichText(
+                  firstText: "We’ve sent you an email at ",
+                  firstTextColor: cnf.colorGray,
+                  secondText: "${this.widget.email} ",
+                  secondTextColor: cnf.colorMainStreamBlue,
+                  thirdText: "for verification. Check your email for the verification link.",
+                  thirdTextColor: cnf.colorGray,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w500,
+                  fontfamily: "Poppins",
+                )
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .53,
+              child: Image.asset("assets/images/email_has_been_sent.png")
+            ),
+            this.emailSentScreen()
+          ],
         );
       },
     );
@@ -151,14 +151,11 @@ class _EmailSent extends State<EmailSent>
           children: [
             Visibility(
               visible: this._visiableCounDown,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 30.0),
-                child: MyText(
-                  text: "${intToTimeLeft(this._start)}",
-                  color: cnf.colorOrange,
-                  fontFamily: "Bebas Neue",
-                  align: TextAlign.start,
-                ),
+              child: MyText(
+                text: "${intToTimeLeft(this._start)}",
+                color: cnf.colorOrange,
+                fontFamily: "Bebas Neue",
+                align: TextAlign.start,
               ),
             ),
             Padding(

@@ -93,26 +93,23 @@ class _ResetPassword extends State<ResetPassword>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: "RESET PASSWORD",
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+            ),
+            Image.asset("assets/images/confirm-image.png"),
+            this.resetPasswordScreen(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop, top: cnf.wcLogoMarginTop),
+              child: LargeButton(
+                onTap: this._resetPassword,
                 label: "RESET PASSWORD",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
               ),
-              Image.asset("assets/images/confirm-image.png"),
-              this.resetPasswordScreen(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop, top: cnf.wcLogoMarginTop),
-                child: LargeButton(
-                  onTap: this._resetPassword,
-                  label: "RESET PASSWORD",
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         );
       },
     );

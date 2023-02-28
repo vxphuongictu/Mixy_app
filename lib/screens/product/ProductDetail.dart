@@ -198,7 +198,7 @@ class _ProductDetailState extends State<ProductDetail>
                           showMore: "Read more",
                           showLess: "Read less",
                           textColor: cnf.colorLightBlack,
-                          trimLines: 10,
+                          trimLines: 8,
                           fontSize: 14,
                           text: '${data?.content}'
                       ),

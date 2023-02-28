@@ -4,7 +4,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:food_e/core/DatabaseManager.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/models/Favourites.dart';
@@ -73,12 +72,10 @@ class _ItemBox extends State<ItemBox>
 
   @override
   void initState() {
-    super.initState();
-    DatabaseManager().checkFavourite(id: this.widget.productID).then((value){
-      setState(() {
-        this.isFavourite = value;
-      });
+    Provider.of<LikedProvider>(context, listen: false).checkFavourite(this.widget.productID!).then((value){
+      this.isFavourite = value;
     });
+    super.initState();
   }
 
   @override
@@ -141,19 +138,19 @@ class _ItemBox extends State<ItemBox>
                         padding: const EdgeInsets.all(10.0),
                         child: ButtonContainer(
                           childWidget: LikeButton(
-                            size: 20.0,
-                            circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)
-                            ),
-                            likeBuilder: (bool isLiked) {
-                              return Icon(
-                                (this.isFavourite == false) ? Icons.favorite_outline : Icons.favorite_outlined,
-                                color: (this.isFavourite == false) ? cnf.colorWhite.toColor() : cnf.colorLightRed.toColor(),
-                                size: 20.0,
-                              );
-                            },
-                            onTap: onLikeButtonTapped
+                              size: 20.0,
+                              circleColor: const CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  (this.isFavourite == false) ? Icons.favorite_outline : Icons.favorite_outlined,
+                                  color: (this.isFavourite == false) ? cnf.colorWhite.toColor() : cnf.colorLightRed.toColor(),
+                                  size: 20.0,
+                                );
+                              },
+                              onTap: onLikeButtonTapped
                           ),
                         ),
                       ),

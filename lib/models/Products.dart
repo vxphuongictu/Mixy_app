@@ -20,12 +20,18 @@ class Products {
   });
 
   factory Products.formJson(Map<String, dynamic> json) {
+    String price = "0.0";
+    try {
+      price = json['price'].toString().replaceAll(' ', '').split('-')[1];
+    } catch (e) {
+      price = json['price'];
+    };
     return Products(
       id: json['id'],
       name: (json['name'] != null) ? removeHtmlTags(json['name']) : null,
       title: (json['title'] != null) ? removeHtmlTags(json['title']) : null,
       description: (json['description'] != null) ? removeHtmlTags(json['description']) : null,
-      price: json['price'],
+      price: price,
       thumbnail: (json['image'] != null) ? json['image']['sourceUrl'] : null
     );
   }

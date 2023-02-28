@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/provider/ThemeModeProvider.dart';
-import 'package:food_e/screens/Payment/MyPaymentMethod.dart';
 import 'package:food_e/screens/Payment/PaymentSetup.dart';
 import 'package:food_e/screens/address/AddressSetup.dart';
-import 'package:food_e/screens/address/MyAddress.dart';
 import 'package:food_e/widgets/BaseScreen.dart';
 import 'package:food_e/widgets/LargeButton.dart';
 import 'package:food_e/widgets/ModalCheckOut.dart';
@@ -79,21 +77,18 @@ class _CheckOut extends State<CheckOut> {
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
-                label: "CHECKOUT",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * .25,
-              ),
-              this.checkout(),
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: "CHECKOUT",
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .32,
+            ),
+            this.checkout(),
+          ],
         );
       },
     );

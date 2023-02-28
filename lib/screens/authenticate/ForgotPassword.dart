@@ -88,34 +88,32 @@ class _ForgotPassword extends State<ForgotPassword>
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
         return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MyTitle(
-                  label: "FORGOT PASSWORD",
-                  color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              MyTitle(
+                label: "FORGOT PASSWORD",
+                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+              ),
+              MyText(
+                text: "We’ll send a password reset link to your email.",
+                color: cnf.colorGray,
+                align: TextAlign.start,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w500,
+                fontFamily: "Poppins",
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .52,
+                width: double.infinity,
+                child: AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: (this._visiable) ? 1.0 : 0.0,
+                  child: Image.asset('assets/images/forgot-password-concept-isolated-white_263070-194.webp'),
                 ),
-                MyText(
-                  text: "We’ll send a password reset link to your email.",
-                  color: cnf.colorGray,
-                  align: TextAlign.start,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Poppins",
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 500),
-                    opacity: (this._visiable) ? 1.0 : 0.0,
-                    child: Image.asset('assets/images/forgot-password-concept-isolated-white_263070-194.webp'),
-                  ),
-                ),
-                this.formForgot()
-              ],
-            ),
+              ),
+              this.formForgot()
+            ],
           ),
         );
       },

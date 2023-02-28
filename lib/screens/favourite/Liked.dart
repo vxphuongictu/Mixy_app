@@ -39,13 +39,13 @@ class _Liked extends State<Liked>
       extendBodyBehindAppBar: false,
       disabledBodyHeight: true,
       scroll: true,
-      body: (Provider.of<LikedProvider>(context, listen: false).countLiked() > 0) ? _basketScreen() : _favouriteIsEmpty(),
+      body: _likedScreen(),
     );
   }
 
   Widget _favouriteIsEmpty()
   {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: MediaQuery.of(context).size.height,
       child: Center(
@@ -55,49 +55,62 @@ class _Liked extends State<Liked>
   }
 
 
-  Widget _basketScreen()
+  Widget _likedScreen()
   {
-    return Consumer<ThemeModeProvider>(
+    return Consumer<LikedProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: cnf.wcLogoMarginTop),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: cnf.wcLogoMarginLeft, right: cnf.wcLogoMarginLeft),
-                child: Row(
-                    children: [
-                      MyTitle(
-                        label: 'LIKED',
-                        color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            EasyLoading.show(status: "Waiting ...");
-                            Provider.of<LikedProvider>(context, listen: false).clearLiked();
-                            EasyLoading.showSuccess("Done");
+        if (value.liked.length > 0) {
+          return Padding(
+            padding: const EdgeInsets.only(top: cnf.wcLogoMarginTop),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: cnf.wcLogoMarginLeft, right: cnf.wcLogoMarginLeft),
+                  child: Row(
+                      children: [
+                        Consumer<ThemeModeProvider>(
+                          builder: (context, value, child) {
+                            return MyTitle(
+                              label: 'LIKED',
+                              color: (value.darkmode == true)
+                                  ? cnf.colorWhite
+                                  : cnf.colorBlack,
+                            );
                           },
-                          child: MyText(
-                            text: "Clear All",
-                            color: cnf.colorGray,
-                            align: TextAlign.right,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w900,
-                          ),
                         ),
-                      )
-                    ]
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              EasyLoading.show(status: "Waiting ...");
+                              Provider.of<LikedProvider>(context, listen: false)
+                                  .clearLiked();
+                              EasyLoading.showSuccess("Done");
+                            },
+                            child: MyText(
+                              text: "Clear All",
+                              color: cnf.colorGray,
+                              align: TextAlign.right,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        )
+                      ]
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
-                child: this.listCart(),
-              )
-            ],
-          ),
-        );
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: cnf.marginScreen, right: cnf.marginScreen),
+                  child: this.listCart(),
+                )
+              ],
+            ),
+          );
+        } else {
+          return _favouriteIsEmpty();
+        }
       },
     );
   }

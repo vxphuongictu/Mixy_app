@@ -11,7 +11,6 @@ class BasketProvider with ChangeNotifier
 
   Future<void> addCart(Cart item) async {
     await DatabaseManager().insertCart(cart: item);
-    _card.clear();
     this.fetchCart();
   }
 
@@ -23,11 +22,12 @@ class BasketProvider with ChangeNotifier
 
   Future<void> clearCart() async {
     await DatabaseManager().clearCart();
-    _card.clear();
+    _card = [];
     notifyListeners();
   }
 
   void fetchCart() {
+    _card = [];
     DatabaseManager().fetchCart().then((value){
       value.forEach((element) {
         _card.add(

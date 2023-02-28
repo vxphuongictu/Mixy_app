@@ -153,18 +153,15 @@ class _AddressSetupState extends State<AddressSetup> {
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
-                label: (this.widget.title == null) ? "ADDRESS SETUP" : this.widget.title!,
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-              ),
-              this.formInput(context)
-            ],
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: (this.widget.title == null) ? "ADDRESS SETUP" : this.widget.title!,
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+            ),
+            this.formInput(context)
+          ],
         );
       },
     );

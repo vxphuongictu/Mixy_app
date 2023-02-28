@@ -107,26 +107,23 @@ class _Login extends State<Login>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              MyTitle(
-                label: "LOGIN",
-                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyTitle(
+              label: "LOGIN",
+              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: AnimatedOpacity(
+                opacity: this._visible ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 300),
+                child: Image.asset('assets/images/login.png'),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: AnimatedOpacity(
-                  opacity: this._visible ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 300),
-                  child: Image.asset('assets/images/login.png'),
-                ),
-              ),
-              this.registerForm()
-            ],
-          ),
+            ),
+            this.registerForm()
+          ],
         );
       },
     );

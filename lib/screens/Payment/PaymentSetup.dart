@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:food_e/core/SharedPreferencesClass.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/provider/ThemeModeProvider.dart';
@@ -89,10 +88,13 @@ class _PaymentSetupState extends State<PaymentSetup> {
                 label: (this.widget.title == null) ? "PAYMENT SETUP" : this.widget.title!,
                 color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
               ),
-              AnimatedScale(
-                scale: this._scale,
-                duration: const Duration(milliseconds: 200),
-                child: Image.asset("assets/images/payment.png"),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * .42,
+                child: AnimatedScale(
+                  scale: this._scale,
+                  duration: const Duration(milliseconds: 200),
+                  child: Image.asset("assets/images/payment.png"),
+                ),
               ),
               this.formInput(context),
             ],

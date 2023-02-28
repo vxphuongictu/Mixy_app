@@ -107,7 +107,7 @@ class _Home extends State<Home>
                 if (snapshot.hasData) {
                   return Recommend(products: snapshot.data!);
                 }
-                return SizedBox();
+                return const CircularProgressIndicator();
               },
             ),
             this.restaurants(),

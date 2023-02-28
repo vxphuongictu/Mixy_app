@@ -65,39 +65,36 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: MyTitle(
-                  label: "MY PAYMENT METHODS",
-                  align: TextAlign.start,
-                  color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: MyTitle(
+                label: "MY PAYMENT METHODS",
+                align: TextAlign.start,
+                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
               ),
-              (this._listCard.length > 0) ? Container(
-                alignment: Alignment.bottomCenter,
-                height: MediaQuery.of(context).size.height * .65,
-                child: this.screen(),
-              ) : Container(
-                width: 300.0,
-                height: MediaQuery.of(context).size.height * .65,
-                child: Image.asset("assets/images/no-payment.png", alignment: Alignment.center),
+            ),
+            (this._listCard.length > 0) ? Container(
+              alignment: Alignment.bottomCenter,
+              height: MediaQuery.of(context).size.height * .65,
+              child: this.screen(),
+            ) : Container(
+              width: 300.0,
+              height: MediaQuery.of(context).size.height * .71,
+              child: Image.asset("assets/images/no-payment.png", alignment: Alignment.center),
+            ),
+            LargeButton(
+              label: "ADD NEW PAYMENT METHOD",
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PaymentSetup(title: "ADD NEW CARD")
+                  )
               ),
-              LargeButton(
-                label: "ADD NEW PAYMENT METHOD",
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PaymentSetup(title: "ADD NEW CARD")
-                    )
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         );
       },
     );
