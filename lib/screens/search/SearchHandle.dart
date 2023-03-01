@@ -69,11 +69,11 @@ class _SearchHandle extends State<SearchHandle>
         width: double.infinity,
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              childAspectRatio: 4 / 5.6,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 4 / 6.5,
               crossAxisSpacing: 15,
-              mainAxisSpacing: 15
+              mainAxisSpacing: 15,
           ),
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,

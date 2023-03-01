@@ -44,7 +44,7 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
           appbar: true,
           appbarBgColor: (value.darkmode == true) ? cnf.darkModeColorbg.toColor() : Colors.white,
           extendBodyBehindAppBar: false,
-          scroll: true,
+          scroll: false,
           disabledBodyHeight: true,
           leading: IconButton(
             onPressed: () => Navigator.pop(context),
@@ -66,32 +66,37 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: double.infinity,
+            Expanded(
+              flex: 2,
               child: MyTitle(
                 label: "MY PAYMENT METHODS",
                 align: TextAlign.start,
                 color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
               ),
             ),
-            (this._listCard.length > 0) ? Container(
-              alignment: Alignment.bottomCenter,
-              height: MediaQuery.of(context).size.height * .65,
-              child: this.screen(),
+            (this._listCard.length > 0) ? Expanded(
+              flex: 8,
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                child: this.screen(),
+              ),
             ) : Container(
               width: 300.0,
               height: MediaQuery.of(context).size.height * .71,
               child: Image.asset("assets/images/no-payment.png", alignment: Alignment.center),
             ),
-            LargeButton(
-              label: "ADD NEW PAYMENT METHOD",
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PaymentSetup(title: "ADD NEW CARD")
-                  )
+            Padding(
+              padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop),
+              child: LargeButton(
+                label: "ADD NEW PAYMENT METHOD",
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PaymentSetup(title: "ADD NEW CARD")
+                    )
+                ),
               ),
             )
           ],
@@ -106,7 +111,7 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
         shrinkWrap: true,
         itemCount: this._listCard.length,
         itemBuilder: (context, index) => Padding(
-          padding: EdgeInsets.only(bottom: 50.0),
+          padding: const EdgeInsets.only(bottom: 50.0),
           child: Slidable(
               key: UniqueKey(),
               endActionPane: ActionPane(

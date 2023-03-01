@@ -115,47 +115,49 @@ class _ItemBox extends State<ItemBox>
             children: [
               GestureDetector(
                 onTap: this.widget.onTap,
-                child: Stack(
-                  children: [
-                    Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(cnf.boxItemMRadius),
-                            topRight: Radius.circular(cnf.boxItemMRadius)
+                child: SizedBox(
+                  child: Stack(
+                    children: [
+                      Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(cnf.boxItemMRadius),
+                              topRight: Radius.circular(cnf.boxItemMRadius)
+                          ),
+                        ),
+                        // width: this.widget.boxWidth,
+                        height: cnf.boxItemThumbnailSize,
+                        child: OverflowBox(
+                          child: Image.network(this.widget.thumbnails!, fit: BoxFit.cover),
                         ),
                       ),
-                      // width: this.widget.boxWidth,
-                      height: cnf.boxItemThumbnailSize,
-                      child: OverflowBox(
-                        child: Image.network(this.widget.thumbnails!, fit: BoxFit.cover),
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ButtonContainer(
-                          childWidget: LikeButton(
-                              size: 20.0,
-                              circleColor: const CircleColor(
-                                  start: Color(0xff00ddff),
-                                  end: Color(0xff0099cc)
-                              ),
-                              likeBuilder: (bool isLiked) {
-                                return Icon(
-                                  (this.isFavourite == false) ? Icons.favorite_outline : Icons.favorite_outlined,
-                                  color: (this.isFavourite == false) ? cnf.colorWhite.toColor() : cnf.colorLightRed.toColor(),
-                                  size: 20.0,
-                                );
-                              },
-                              onTap: onLikeButtonTapped
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ButtonContainer(
+                            childWidget: LikeButton(
+                                size: 20.0,
+                                circleColor: const CircleColor(
+                                    start: Color(0xff00ddff),
+                                    end: Color(0xff0099cc)
+                                ),
+                                likeBuilder: (bool isLiked) {
+                                  return Icon(
+                                    (this.isFavourite == false) ? Icons.favorite_outline : Icons.favorite_outlined,
+                                    color: (this.isFavourite == false) ? cnf.colorWhite.toColor() : cnf.colorLightRed.toColor(),
+                                    size: 20.0,
+                                  );
+                                },
+                                onTap: onLikeButtonTapped
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               GestureDetector(
@@ -172,8 +174,10 @@ class _ItemBox extends State<ItemBox>
                   ),
                 ),
               ),
+              Expanded(
+                child: SizedBox()
+              ),
               Padding(
-                padding: EdgeInsets.only(left: this.spaceBetween, right: this.spaceBetween, bottom: this.spaceBetween),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -208,6 +212,7 @@ class _ItemBox extends State<ItemBox>
                     )
                   ],
                 ),
+                padding: EdgeInsets.only(left: this.spaceBetween, right: this.spaceBetween, bottom: this.spaceBetween),
               )
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:food_e/core/DatabaseManager.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/provider/ThemeModeProvider.dart';
+import 'package:food_e/screens/Payment/MyPaymentMethod.dart';
 import 'package:food_e/screens/address/AddressSetup.dart';
 import 'package:food_e/screens/address/MyAddress.dart';
 import 'package:food_e/screens/checkout/OrderConfirm.dart';
@@ -84,9 +85,9 @@ class _ModalCheckout extends State<ModalCheckOut>
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: 550.0,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30.0),
               topRight: Radius.circular(30.0),
             ),
@@ -117,7 +118,7 @@ class _ModalCheckout extends State<ModalCheckOut>
                 ),
                 GestureDetector(
                   onTap: () {
-                    (this.fetchDelivery != null && this.fetchDelivery.isNotEmpty) ? Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress())).then((_)=>setState(() {})) : Navigator.push(context, MaterialPageRoute(builder: (context) =>AddressSetup())).then((_) => setState(() {}));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress())).then((_)=>setState(() {}));
                   },
                   child: this.lineItem(label: "Delivery", value: (this.currentLocationName != null) ? this.currentLocationName : "Select Method"),
                 ),
@@ -127,7 +128,7 @@ class _ModalCheckout extends State<ModalCheckOut>
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return SizedBox();
+                            return MyPaymentMethod();
                             // return Payment(bankCallback: this.paymentCallBack);
                           },
                         )

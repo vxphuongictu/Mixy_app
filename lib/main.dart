@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/provider/LikedProvider.dart';
 import 'package:food_e/provider/ThemeModeProvider.dart';
@@ -36,6 +37,7 @@ import 'core/_config.dart' as cnf;
 
 void main() async {
   await initHiveForFlutter();
+  Stripe.publishableKey = cnf.stripePublishableKey;
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) {
     runApp(ChangeNotifierProvider(
       create: (_) => ThemeModel(),

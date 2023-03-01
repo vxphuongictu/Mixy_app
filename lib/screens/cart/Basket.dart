@@ -91,11 +91,8 @@ class _Basket extends State<Basket>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * .05,
+                Expanded(
+                  flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(left: cnf.wcLogoMarginLeft,
                         right: cnf.wcLogoMarginLeft),
@@ -132,11 +129,8 @@ class _Basket extends State<Basket>
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * .6,
+                Expanded(
+                  flex: 6,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: cnf.marginScreen, right: cnf.marginScreen),
@@ -144,13 +138,8 @@ class _Basket extends State<Basket>
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * .2,
-                  child: SizedBox(
-                    child: this.details(),
-                  ),
+                  height: 200.0,
+                  child: this.details()
                 ),
               ],
             ),
@@ -179,8 +168,9 @@ class _Basket extends State<Basket>
               )
             ],
           ),
-          padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen, top: cnf.marginScreen),
+          padding: const EdgeInsets.only(bottom: cnf.marginScreen, left: cnf.marginScreen, right: cnf.marginScreen, top: cnf.marginScreen),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               MyTitle(

@@ -67,17 +67,23 @@ class _MyAddress extends State<MyAddress> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MyTitle(
-              label: "MY ADDRESSES",
-              color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-              align: TextAlign.start,
+            Expanded(
+              flex: 2,
+              child: MyTitle(
+                label: "MY ADDRESSES",
+                color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+                align: TextAlign.start,
+              ),
             ),
             (this.address.isNotEmpty) ?
-            Container(
-              alignment: Alignment.bottomCenter,
-              padding: const EdgeInsets.only(bottom: 20.0),
-              height: MediaQuery.of(context).size.height * .65,
-              child: this.screen(),
+            Expanded(
+              flex: 8,
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                padding: const EdgeInsets.only(bottom: 20.0),
+                height: MediaQuery.of(context).size.height * .65,
+                child: this.screen(),
+              ),
             ) : Expanded(
               child: Container(
                   width: double.infinity,

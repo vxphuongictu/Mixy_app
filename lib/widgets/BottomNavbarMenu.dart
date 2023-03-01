@@ -79,6 +79,7 @@ class _BottomNavbarMenuState extends State<BottomNavbarMenu> {
       builder: (context, value, child) {
         return PersistentTabView(
           context,
+          navBarHeight: 70.0,
           controller: _controller,
           screens: _buildScreens(),
           items: _navBarsItems((value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack),
