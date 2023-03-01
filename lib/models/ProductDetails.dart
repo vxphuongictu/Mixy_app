@@ -16,11 +16,17 @@ class ProductDetails {
   });
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) {
+    String price = "0.0";
+    try {
+      price = json['price'].toString().replaceAll(' ', '').split('-')[1];
+    } catch (e) {
+      price = json['price'];
+    };
     return ProductDetails(
       title: removeHtmlTags(json['title']),
       name: removeHtmlTags(json['name']),
       content: removeHtmlTags(json['content']),
-      price: json['price'],
+      price: price,
       galleryImages: json['galleryImages']['nodes']
     );
   }

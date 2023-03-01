@@ -1,3 +1,6 @@
+import 'package:extended_phone_number_input/consts/enums.dart';
+import 'package:extended_phone_number_input/phone_number_controller.dart';
+import 'package:food_e/widgets/CustomPhoneInput.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,7 +13,6 @@ import 'package:food_e/widgets/MyInput.dart';
 import 'package:food_e/widgets/MyRichText.dart';
 import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/requests/register.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:provider/provider.dart';
 
 
@@ -27,6 +29,9 @@ class _Register extends State<Register>
 
 
   void _handleRegister() async {
+
+    final phoneExp = RegExp(r'^\+?\d{9,15}$');
+
     if (this.fullname.text == "") {
       EasyLoading.showError(duration: const Duration(seconds: 3), "Full name is required");
     } else if (this.email.text == "") {
@@ -37,6 +42,8 @@ class _Register extends State<Register>
       EasyLoading.showError(duration: const Duration(seconds: 3), "Password is required");
     } else if (this.password.text != this.confirm.text) {
       EasyLoading.showError(duration: const Duration(seconds: 3), "Password incorrect");
+    } else if (!phoneExp.hasMatch(this.phone.text)) {
+      EasyLoading.showError(duration: const Duration(seconds: 3), "Please enter a valid phone number");
     } else {
       EasyLoading.show(status: "Sign Up ...");
       final _register = await register(email: this.email.text,
@@ -56,9 +63,10 @@ class _Register extends State<Register>
   }
 
   final double _distanceOfInput = 30.0;
+
+  TextEditingController phone = TextEditingController();
   TextEditingController fullname = TextEditingController();
   TextEditingController email = TextEditingController();
-  TextEditingController phone = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirm = TextEditingController();
   bool _showPassword = true;
@@ -139,16 +147,20 @@ class _Register extends State<Register>
         ),
         Padding(
           padding: EdgeInsets.only(bottom: this._distanceOfInput),
-          child: MyInput(
-            title: "PHONE",
-            maxLength: 10,
-            placeholder: "What is your phone number?",
-            textController: this.phone,
-            isNumber: true,
-            onChanged: (value) {
-              if (this.phone.text.length < 10) {
-
-              }
+          child: CustomPhoneInput(
+            title: "Phone",
+            initialCountry: 'VN',
+            locale: 'vi',
+            border: InputBorder.none,
+            countryListMode: CountryListMode.bottomSheet,
+            allowPickFromContacts: false,
+            hint: "What is your phone number?",
+            showSelectedFlag: false,
+            enabledBorder: InputBorder.none,
+            onChanged: (p0) {
+              setState(() {
+                this.phone.text = p0;
+              });
             },
           ),
         ),

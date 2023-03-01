@@ -82,10 +82,13 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
                 alignment: Alignment.bottomCenter,
                 child: this.screen(),
               ),
-            ) : Container(
-              width: 300.0,
-              height: MediaQuery.of(context).size.height * .71,
-              child: Image.asset("assets/images/no-payment.png", alignment: Alignment.center),
+            ) : Expanded(
+              flex: 8,
+              child: SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * .71,
+                child: Image.asset("assets/images/no-payment.png", alignment: Alignment.center),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop),

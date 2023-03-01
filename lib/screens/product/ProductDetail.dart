@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/provider/BasketProvider.dart';
+import 'package:food_e/provider/ThemeModeProvider.dart';
 import 'package:food_e/widgets/BaseScreen.dart';
 import 'package:food_e/widgets/LargeButton.dart';
 import 'package:food_e/widgets/MyInput.dart';
@@ -192,16 +193,20 @@ class _ProductDetailState extends State<ProductDetail>
                         color: cnf.colorLightGrayShadow,
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: this.spaceFromContentToQuantity),
-                      child: MyReadMoreText(
-                          showMore: "Read more",
-                          showLess: "Read less",
-                          textColor: cnf.colorLightBlack,
-                          trimLines: 8,
-                          fontSize: 14,
-                          text: '${data?.content}'
-                      ),
+                    Consumer<ThemeModeProvider>(
+                      builder: (context, value, child) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: this.spaceFromContentToQuantity),
+                          child: MyReadMoreText(
+                              showMore: "Read more",
+                              showLess: "Read less",
+                              textColor: (value.darkmode == true) ? cnf.colorWhite : cnf.colorLightBlack,
+                              trimLines: 8,
+                              fontSize: 14,
+                              text: '${data?.content}'
+                          ),
+                        );
+                      },
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -85,6 +85,7 @@ class _MyAddress extends State<MyAddress> {
                 child: this.screen(),
               ),
             ) : Expanded(
+              flex: 8,
               child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,

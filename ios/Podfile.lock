@@ -3,6 +3,8 @@ PODS:
     - Flutter
     - ReachabilitySwift
   - Flutter (1.0.0)
+  - fluttercontactpicker (4.6.0):
+    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -76,6 +78,7 @@ PODS:
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - Flutter (from `Flutter`)
+  - fluttercontactpicker (from `.symlinks/plugins/fluttercontactpicker/ios`)
   - libphonenumber_plugin (from `.symlinks/plugins/libphonenumber_plugin/ios`)
   - open_mail_app (from `.symlinks/plugins/open_mail_app/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
@@ -106,6 +109,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/connectivity_plus/ios"
   Flutter:
     :path: Flutter
+  fluttercontactpicker:
+    :path: ".symlinks/plugins/fluttercontactpicker/ios"
   libphonenumber_plugin:
     :path: ".symlinks/plugins/libphonenumber_plugin/ios"
   open_mail_app:
@@ -130,6 +135,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  fluttercontactpicker: d582836dea6b5d489f3d259f35d7817ae82ee5e6
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   libphonenumber_plugin: e8a7d64a6624a7c25f2c4ab0b7ead2a8e341e35e
   open_mail_app: 794172f6a22cd16319d3ddaf45e945b2f74952b0

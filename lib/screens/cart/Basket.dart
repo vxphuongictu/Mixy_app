@@ -138,7 +138,7 @@ class _Basket extends State<Basket>
                   ),
                 ),
                 SizedBox(
-                  height: 200.0,
+                  height: 220.0,
                   child: this.details()
                 ),
               ],

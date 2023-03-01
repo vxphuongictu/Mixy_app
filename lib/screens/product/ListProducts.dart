@@ -108,7 +108,7 @@ class _ListProducts extends State<ListProducts>
                               productQuantity: 1,
                               price: "${_item[index].price}",
                               cartCallback: () {
-                                EasyLoading.showSuccess("Added to cart");
+                                EasyLoading.showSuccess("Add to cart");
                                 Provider.of<BasketProvider>(context, listen: false).addCart(
                                     Cart(
                                         productID: _item[index].id.toString(),
