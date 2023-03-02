@@ -1,6 +1,8 @@
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:flutter/material.dart';
 import 'package:food_e/functions/toColor.dart';
+import 'package:food_e/provider/ThemeModeProvider.dart';
+import 'package:provider/provider.dart';
 
 
 class LargeButton extends StatelessWidget
@@ -37,40 +39,44 @@ class LargeButton extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: this.onTap,
-      child: Container(
-        width: double.infinity,
-        height: this.buttonHeight,
-        decoration: BoxDecoration(
-            color: this.buttonColor.toColor(),
-            border: (this.borderColor != "") ? Border.all(
-              color: this.borderColor.toColor(),
-              width: this.borderWidth
-            ) : null,
-            borderRadius: BorderRadius.all(
-              Radius.circular(this.buttonRadius!),
+    return Consumer<ThemeModeProvider>(
+      builder: (context, value, child) {
+        return GestureDetector(
+          onTap: this.onTap,
+          child: Container(
+            width: double.infinity,
+            height: this.buttonHeight,
+            decoration: BoxDecoration(
+                color: this.buttonColor.toColor(),
+                border: (this.borderColor != "") ? Border.all(
+                    color: this.borderColor.toColor(),
+                    width: this.borderWidth
+                ) : null,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(this.buttonRadius!),
+                ),
+                boxShadow: [
+                  (this.buttonShadow == true && value.darkmode == false) ? BoxShadow(
+                    color: cnf.colorLightGrayShadow.toColor(),
+                    blurRadius: 3,
+                    offset: const Offset(0, 4),
+                  ) : const BoxShadow(),
+                ]
             ),
-            boxShadow: [
-              (this.buttonShadow == true) ? BoxShadow(
-                color: cnf.colorLightGrayShadow.toColor(),
-                blurRadius: 3,
-                offset: const Offset(0, 4),
-              ) : const BoxShadow(),
-            ]
-        ),
-        child: (this.label != null) ? Center(
-          child: Text(
-            "${this.label}",
-            style: TextStyle(
-              fontFamily: this.fontFamily,
-              fontSize: this.fontSize,
-              color: this.textColor!.toColor(),
-              fontWeight: this.fontWeight,
-            ),
+            child: (this.label != null) ? Center(
+              child: Text(
+                "${this.label}",
+                style: TextStyle(
+                  fontFamily: this.fontFamily,
+                  fontSize: this.fontSize,
+                  color: this.textColor!.toColor(),
+                  fontWeight: this.fontWeight,
+                ),
+              ),
+            ) : const SizedBox(),
           ),
-        ) : const SizedBox(),
-      ),
+        );
+      },
     );
   }
 }

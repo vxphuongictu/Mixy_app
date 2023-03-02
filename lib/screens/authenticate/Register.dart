@@ -1,5 +1,4 @@
 import 'package:extended_phone_number_input/consts/enums.dart';
-import 'package:extended_phone_number_input/phone_number_controller.dart';
 import 'package:food_e/widgets/CustomPhoneInput.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';

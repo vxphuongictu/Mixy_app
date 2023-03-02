@@ -38,6 +38,7 @@ import 'core/_config.dart' as cnf;
 void main() async {
   await initHiveForFlutter();
   Stripe.publishableKey = cnf.stripePublishableKey;
+  await Stripe.instance.applySettings();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) {
     runApp(ChangeNotifierProvider(
       create: (_) => ThemeModel(),

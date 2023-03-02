@@ -113,9 +113,15 @@ class _PaymentSetupState extends State<PaymentSetup> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             CardFormField(
+              style: CardFormStyle(
+                backgroundColor: Colors.white70,
+                textColor: (value.darkmode == true) ? cnf.wcWhiteText.toColor() : cnf.colorLightBlack.toColor(),
+                placeholderColor: (value.darkmode == true) ? cnf.wcWhiteText.toColor() : cnf.colorLightBlack.toColor(),
+                borderColor: (value.darkmode == true) ? cnf.wcWhiteText.toColor() : cnf.colorLightBlack.toColor(),
+              ),
               controller: controller,
               enablePostalCode: true,
-              autofocus: true,
+              autofocus: false,
               onCardChanged: (details) {
                 setState(() {
                   this.card = details;
