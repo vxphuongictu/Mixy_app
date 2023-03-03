@@ -94,89 +94,91 @@ class _ModalCheckout extends State<ModalCheckOut>
             color: (value.darkmode == true) ? cnf.darkModeColorbg.toColor() : Colors.white,
           ),
           child: Container(
-            margin: const EdgeInsets.only(top: 30.0, left: 25.0, right: 25.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyText(
-                        text: "Checkout",
-                        fontSize: 24.0,
-                        color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(
-                        Icons.close,
-                        color: (value.darkmode == true) ? cnf.colorWhite.toColor() : cnf.colorBlack.toColor(),
+            margin: const EdgeInsets.only(top: 30.0, left: cnf.marginScreen, right: cnf.marginScreen),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      MyText(
+                          text: "Checkout",
+                          fontSize: 24.0,
+                          color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
                       ),
-                    )
-                  ],
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress())).then((_)=>setState(() {}));
-                  },
-                  child: this.lineItem(label: "Delivery", value: (this.currentLocationName != null) ? this.currentLocationName : "Select Method"),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return MyPaymentMethod();
-                            // return Payment(bankCallback: this.paymentCallBack);
-                          },
-                        )
-                    );
-                  },
-                  child: this.lineItem(label: "Payment", value: (this.currentCardNumber != null) ? MyText(text: carNumber("${this.currentCardNumber}")) : Image.asset('assets/images/card.png'), valueIsImage: true),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print("Promo Code");
-                  },
-                  child: this.lineItem(label: "Promo Code", value: "Pick discount"),
-                ),
-                this.lineItem(label: "Total Cost", value: "\$${(this.widget.totalCost)}"),
-                this.readTerms(),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 50.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      EasyLoading.show(status: "Waiting...");
-                      if (this.email != "" && this.city != "" && this.postCode != "") {
-                        handlePayPress(
-                          email: this.email,
-                          city: this.city,
-                          postCode: this.postCode.toString(),
-                          phone: '0877946666',
-                          country: 'VN',
-                          total_price: double.parse(this.widget.totalCost!),
-                        ).then((value) async {
-                          if (value == true) {
-                            EasyLoading.dismiss();
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirm()));
-                            await DatabaseManager().clearCart();
-                          } else {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => OrderFailed()));
-                          }
-                        });
-
-                      } else {
-                        EasyLoading.showError("You need to add payment method before order!");
-                      }
-                    },
-                    child: LargeButton(
-                      label: "Place Order",
-                    ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: (value.darkmode == true) ? cnf.colorWhite.toColor() : cnf.colorBlack.toColor(),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress())).then((_)=>setState(() {}));
+                    },
+                    child: this.lineItem(label: "Delivery", value: (this.currentLocationName != null) ? this.currentLocationName : "Select Method"),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return MyPaymentMethod();
+                              // return Payment(bankCallback: this.paymentCallBack);
+                            },
+                          )
+                      );
+                    },
+                    child: this.lineItem(label: "Payment", value: (this.currentCardNumber != null) ? MyText(text: carNumber("${this.currentCardNumber}")) : Image.asset('assets/images/card.png'), valueIsImage: true),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      print("Promo Code");
+                    },
+                    child: this.lineItem(label: "Promo Code", value: "Pick discount"),
+                  ),
+                  this.lineItem(label: "Total Cost", value: "\$${(this.widget.totalCost)}"),
+                  this.readTerms(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 50.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        EasyLoading.show(status: "Waiting...");
+                        if (this.email != "" && this.city != "" && this.postCode != "") {
+                          handlePayPress(
+                            email: this.email,
+                            city: this.city,
+                            postCode: this.postCode.toString(),
+                            phone: '0877946666',
+                            country: 'VN',
+                            total_price: double.parse(this.widget.totalCost!),
+                          ).then((value) async {
+                            if (value == true) {
+                              EasyLoading.dismiss();
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirm()));
+                              await DatabaseManager().clearCart();
+                            } else {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => OrderFailed()));
+                            }
+                          });
+
+                        } else {
+                          EasyLoading.showError("You need to add payment method before order!");
+                        }
+                      },
+                      child: LargeButton(
+                        label: "Place Order",
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -188,7 +190,7 @@ class _ModalCheckout extends State<ModalCheckOut>
   {
     return Container(
         width: double.infinity,
-        margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
+        margin: const EdgeInsets.only(top: 20.0, bottom: 20.0),
         child: Text.rich(
           TextSpan(
               text: "By placing an order you agree to our ",
@@ -256,27 +258,25 @@ class _ModalCheckout extends State<ModalCheckOut>
                     color: (_value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
                   ),
                   Expanded(
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          (valueIsImage) ? value : Container(
-                            width: 180.0,
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: MyText(
-                              text: "${value}",
-                              maxLines: 1,
-                              textOverflow: true,
-                              color: (_value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
-                            ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        (valueIsImage) ? value : Container(
+                          width: 180.0,
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: MyText(
+                            text: "${value}",
+                            maxLines: 1,
+                            textOverflow: true,
+                            color: (_value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
                           ),
-                          Icon(
-                            Icons.chevron_right,
-                            size: 30.0,
-                            color: (_value.darkmode == true) ? cnf.colorWhite.toColor() : cnf.colorBlack.toColor(),
-                          )
-                        ],
-                      ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 30.0,
+                          color: (_value.darkmode == true) ? cnf.colorWhite.toColor() : cnf.colorBlack.toColor(),
+                        )
+                      ],
                     ),
                   ),
                 ],
