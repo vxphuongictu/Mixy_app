@@ -89,12 +89,14 @@ class _Settings extends State<Settings>
             color: cnf.colorBlack.toColor(),
           ),
         ),
-        Column(
-          children: [
-            _screenMode(),
-            _emailMarketing(),
-            _notification()
-          ],
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              _screenMode(),
+              _emailMarketing(),
+              _notification()
+            ],
+          ),
         )
       ],
     );

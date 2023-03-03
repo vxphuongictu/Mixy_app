@@ -65,13 +65,15 @@ class _SearchHandle extends State<SearchHandle>
         child: Image.asset('assets/images/search-not-found.png'),
       );
     } else {
+      final _heightScreen = MediaQuery.of(context).size.height;
+      print(_heightScreen / 2);
       return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 4 / 6.5,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: (_heightScreen / 2 >= 300) ? 2 : 1,
+              childAspectRatio: (_heightScreen / 2 >= 300) ? 4 / 6.5 : 1,
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
           ),
@@ -86,7 +88,7 @@ class _SearchHandle extends State<SearchHandle>
                 MaterialPageRoute(builder: (context) => ProductDetail(id: "${this._response?[index].id}"))
               ),
               cartCallback: () {
-                EasyLoading.showSuccess("Added to cart");
+                EasyLoading.showSuccess("Add to cart");
                 DatabaseManager().insertCart(
                     cart: Cart(
                         productID: "${this._response?[index].id}",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/core/_config.dart' as cnf;
@@ -33,8 +34,7 @@ class _PaymentSetupState extends State<PaymentSetup> {
   double _scale = 0.0;
 
   // text controller
-  final controller = CardFormEditController();
-  CardFieldInputDetails ? card;
+  CardFormEditController controller = CardFormEditController();
 
   bool setAsDefaultSwitch = false;
 
@@ -70,13 +70,13 @@ class _PaymentSetupState extends State<PaymentSetup> {
             ),
           ),
           margin: true,
-          body: paymentSetupScreen(context),
+          body: paymentSetupScreen(),
         );
       },
     );
   }
 
-  Widget paymentSetupScreen(BuildContext context)
+  Widget paymentSetupScreen()
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
@@ -96,7 +96,7 @@ class _PaymentSetupState extends State<PaymentSetup> {
                   child: Image.asset("assets/images/payment.png"),
                 ),
               ),
-              this.formInput(context),
+              this.formInput(),
             ],
           ),
         );
@@ -104,7 +104,7 @@ class _PaymentSetupState extends State<PaymentSetup> {
     );
   }
 
-  Widget formInput(BuildContext context)
+  Widget formInput()
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
@@ -113,20 +113,14 @@ class _PaymentSetupState extends State<PaymentSetup> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             CardFormField(
+              controller: this.controller,
               style: CardFormStyle(
                 backgroundColor: Colors.white70,
                 textColor: (value.darkmode == true) ? cnf.wcWhiteText.toColor() : cnf.colorLightBlack.toColor(),
                 placeholderColor: (value.darkmode == true) ? cnf.wcWhiteText.toColor() : cnf.colorLightBlack.toColor(),
                 borderColor: (value.darkmode == true) ? cnf.wcWhiteText.toColor() : cnf.colorLightBlack.toColor(),
               ),
-              controller: controller,
-              enablePostalCode: true,
               autofocus: false,
-              onCardChanged: (details) {
-                setState(() {
-                  this.card = details;
-                });
-              },
               dangerouslyGetFullCardDetails: true,
               dangerouslyUpdateFullCardDetails: true,
             ),
@@ -134,15 +128,21 @@ class _PaymentSetupState extends State<PaymentSetup> {
             Padding(
               padding: const EdgeInsets.only(top: cnf.wcLogoMarginTop, bottom: cnf.wcLogoMarginTop),
               child: LargeButton(
-                onTap: () => handleAddCard(
-                    context: context,
-                    title: this.widget.title,
-                    cvv: this.card?.cvc,
-                    expiryDate: "${this.card?.expiryMonth}/${this.card?.expiryYear}",
-                    cardNumber: this.card?.number,
-                    isDefault: this.setAsDefaultSwitch,
-                    checkOutTotalPrice: this.widget.checkOutTotalPrice
-                ),
+                onTap: () {
+                  if (this.controller.details.complete == true) {
+                    handleAddCard(
+                        context: context,
+                        title: this.widget.title,
+                        cvv: this.controller.details.cvc,
+                        expiryDate: "${this.controller.details.expiryMonth}/${this.controller.details.expiryYear}",
+                        cardNumber: this.controller.details.number,
+                        isDefault: this.setAsDefaultSwitch,
+                        checkOutTotalPrice: this.widget.checkOutTotalPrice
+                    );
+                  } else {
+                    EasyLoading.showError("Please input validate card information");
+                  }
+                },
                 label: "Add card",
               ),
             ),
