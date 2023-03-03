@@ -23,7 +23,7 @@ class _OrderConfirm extends State<OrderConfirm>
   @override
   Widget build(BuildContext context) {
     return BaseScreen(
-      scroll: false,
+      scroll: true,
       extendBodyBehindAppBar: true,
       margin: false,
       body: _screen(),
@@ -47,9 +47,11 @@ class _OrderConfirm extends State<OrderConfirm>
                       label: "ORDER CONFIRMED!",
                       color: cnf.colorWhite,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 50.0, bottom: 50.0),
-                      child: Image.asset('assets/images/orderconfirm.png'),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 50.0, bottom: 50.0),
+                        child: Image.asset('assets/images/orderconfirm.png'),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
@@ -65,11 +67,10 @@ class _OrderConfirm extends State<OrderConfirm>
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop, left: cnf.marginScreen, right: cnf.marginScreen),
+                padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop, left: cnf.marginScreen, right: cnf.marginScreen, top: cnf.marginScreen),
                 child: LargeButton(
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistory())),
                   label: "TRACK MY ORDER",
-                  textColor: (value.darkmode == true) ? cnf.wcWhiteText : cnf.colorMainStreamBlue,
                   buttonColor: cnf.colorMainStreamBlue,
                   buttonShadow: false,
                 ),
