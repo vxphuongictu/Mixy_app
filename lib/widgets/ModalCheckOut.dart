@@ -252,12 +252,16 @@ class _ModalCheckout extends State<ModalCheckOut>
               margin: const EdgeInsets.only(bottom: 20.0),
               child: Row(
                 children: [
-                  MyText(
-                    text: "${label}",
-                    fontWeight: FontWeight.w900,
-                    color: (_value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+                  Expanded(
+                    flex: 1,
+                    child: MyText(
+                      text: "${label}",
+                      fontWeight: FontWeight.w900,
+                      color: (_value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
+                    ),
                   ),
                   Expanded(
+                    flex: 3,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
