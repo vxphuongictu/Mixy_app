@@ -70,7 +70,7 @@ class _OrderConfirm extends State<OrderConfirm>
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => OrderHistory())),
                   label: "TRACK MY ORDER",
                   textColor: (value.darkmode == true) ? cnf.wcWhiteText : cnf.colorMainStreamBlue,
-                  buttonColor: (value.darkmode == true) ? cnf.colorMainStreamBlue : cnf.colorWhite,
+                  buttonColor: cnf.colorMainStreamBlue,
                   buttonShadow: false,
                 ),
               )

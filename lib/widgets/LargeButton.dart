@@ -60,7 +60,9 @@ class LargeButton extends StatelessWidget
                     color: cnf.colorLightGrayShadow.toColor(),
                     blurRadius: 3,
                     offset: const Offset(0, 4),
-                  ) : const BoxShadow(),
+                  ) : const BoxShadow(
+                    color: Colors.transparent
+                  ),
                 ]
             ),
             child: (this.label != null) ? Center(
