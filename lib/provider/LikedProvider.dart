@@ -1,3 +1,8 @@
+/*
+ * state manager of Liked (favourite)
+ * it likely setState but you can using it in any screen
+ */
+
 import 'package:flutter/cupertino.dart';
 import 'package:food_e/core/DatabaseManager.dart';
 import 'package:food_e/models/Favourites.dart';

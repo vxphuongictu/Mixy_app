@@ -1,5 +1,5 @@
 /*
- * model of account in shared preferences
+ * model of account
  */
 
 class Account

@@ -1,4 +1,6 @@
-
+/*
+ * Model of address
+ */
 
 class Address {
   String ? addressLineOne;

@@ -112,7 +112,7 @@ class _Account extends State<Account>
                 EasyLoading.show(status: "Logging out ...");
                 logout();
                 EasyLoading.dismiss();
-                Navigator.of(context, rootNavigator: true).pushNamed("authenticated-options/");
+                Navigator.of(context, rootNavigator: true).pushReplacementNamed("authenticated-options/");
               })
             ]
           ),

@@ -1,4 +1,6 @@
-
+/*
+ * Model of payment
+ */
 
 class Payment {
   String ? cardNumber;

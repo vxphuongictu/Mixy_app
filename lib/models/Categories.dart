@@ -1,4 +1,6 @@
-
+/*
+ * Model of cateogries
+ */
 
 class Categories {
   String id;

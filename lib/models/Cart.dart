@@ -1,4 +1,6 @@
-
+/*
+ * Model of Cart
+ */
 
 class Cart
 {

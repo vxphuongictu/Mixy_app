@@ -1,3 +1,9 @@
+/*
+ * Payment with stripe
+ * just using development mode
+ * docs: https://stripe.com/docs/keys
+ */
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:food_e/core/_config.dart';
@@ -46,6 +52,7 @@ Future<bool> handlePayPress({required String email, required String phone, requi
     ),
   ); // mocked data for tests
 
+  // Uncomment if you have productions license key
   // 2. Create payment method
   //
   // final paymentMethod = await Stripe.instance.createPaymentMethod(

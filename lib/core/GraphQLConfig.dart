@@ -1,4 +1,5 @@
 /*
+ * Graphql config
  * Reference source: https://murainoyakubu.medium.com/simplified-graphql-implementations-for-query-and-mutation-in-flutter-9bce1deda792
  */
 

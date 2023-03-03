@@ -156,7 +156,7 @@ SPEC CHECKSUMS:
   StripePaymentsUI: fd08081c4be73c16322dc76a1878140520a9df2e
   StripeUICore: ed68cbd5ad0626e0760e772f8c82d96cae9b829b
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
-  video_player_avfoundation: 6d971a232d72e6ee25368378d48a079dea01f1cf
+  video_player_avfoundation: 81e49bb3d9fb63dccf9fa0f6d877dc3ddbeac126
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 

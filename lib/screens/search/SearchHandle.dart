@@ -66,7 +66,6 @@ class _SearchHandle extends State<SearchHandle>
       );
     } else {
       final _heightScreen = MediaQuery.of(context).size.height;
-      print(_heightScreen / 2);
       return Container(
         width: double.infinity,
         padding: const EdgeInsets.all(10.0),
@@ -76,6 +75,7 @@ class _SearchHandle extends State<SearchHandle>
               childAspectRatio: (_heightScreen / 2 >= 300) ? 4 / 6.5 : 1,
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
+              mainAxisExtent: 270.0
           ),
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,

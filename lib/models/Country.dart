@@ -1,4 +1,7 @@
-
+/*
+ * Model of country
+ * Api for this model: https://restcountries.com/v3.1/all
+ */
 
 class Country {
   String common;

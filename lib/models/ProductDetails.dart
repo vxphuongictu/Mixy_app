@@ -1,3 +1,8 @@
+/*
+ * Model of product details
+ * I import removeHtmlTags package because response from server is html
+ */
+
 import 'package:food_e/functions/products/removeHtmlTags.dart';
 
 class ProductDetails {

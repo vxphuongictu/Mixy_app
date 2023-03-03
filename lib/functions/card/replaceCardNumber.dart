@@ -1,3 +1,6 @@
+/*
+ * custom function to change card number to visible, just show four end of number
+ */
 
 replaceChar(String oldString, int index, String newChar) {
   return oldString.substring(0, index) + newChar + oldString.substring(index + 1);

@@ -1,3 +1,7 @@
+/*
+ * Logout function
+ * It will destroy user information in SharedPreferencesClass
+ */
 import 'package:food_e/core/SharedPreferencesClass.dart';
 
 

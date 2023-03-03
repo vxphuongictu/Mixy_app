@@ -1,4 +1,7 @@
-/// replace html dom to white space
+/*
+ * replace html dom to white space
+ * push to html string, will return text without html element
+ */
 
 import 'dart:core';
 

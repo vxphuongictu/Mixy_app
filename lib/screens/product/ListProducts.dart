@@ -46,8 +46,7 @@ class _ListProducts extends State<ListProducts>
             appbarBgColor: (value.darkmode == true) ? cnf.darkModeColorbg.toColor() : Colors.white,
             screenBgColor: cnf.colorWhite,
             extendBodyBehindAppBar: false,
-            disabledBodyHeight: true,
-            scroll: true,
+            scroll: false,
             body: _productsScreen()
         );
       },
@@ -69,9 +68,11 @@ class _ListProducts extends State<ListProducts>
                   color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
-                child: this.listProducts(),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
+                  child: this.listProducts(),
+                ),
               )
             ],
           ),
@@ -81,60 +82,71 @@ class _ListProducts extends State<ListProducts>
   }
 
   Widget listProducts() {
+    final _heightScreen = MediaQuery.of(context).size.height;
+
     return FutureBuilder(
       future: this._products,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<Products> _item = snapshot.data!;
           return AnimationLimiter(
-            child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _item.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 500),
-                    child: SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: GestureDetector(
-                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetail(id: _item[index].id.toString()))),
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: cnf.marginScreen),
-                            child: ProductBox(
-                              title: "${_item[index].name}",
-                              productID: "${_item[index].id}",
-                              productQuantity: 1,
-                              price: "${_item[index].price}",
-                              cartCallback: () {
-                                EasyLoading.showSuccess("Add to cart");
-                                Provider.of<BasketProvider>(context, listen: false).addCart(
-                                    Cart(
-                                        productID: _item[index].id.toString(),
-                                        productName: "${_item[index].name}",
-                                        productQuantity: 1,
-                                        productThumbnails: _item[index].thumbnail.toString(),
-                                        productPrice: "${_item[index].price.toString()}"
-                                    )
-                                );
-                                Future.delayed(
-                                  const Duration(seconds: 1),
-                                      () => EasyLoading.dismiss(),
-                                );
-                              },
-                              thumbnails: "${_item[index].thumbnail}",
-                            ),
-                          ),
-                        ),
+            child: GridView.builder(
+              itemCount: _item.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: (_heightScreen / 2 >= 300) ? 2 : 1,
+                childAspectRatio: (_heightScreen / 2 >= 300) ? 4 / 6 : 1,
+                mainAxisExtent: 270.0
+              ),
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredGrid(
+                  position: index,
+                  duration: const Duration(milliseconds: 500),
+                  columnCount: 2,
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetail(id: _item[index].id.toString()))),
+                        child: ProductBox(
+                          title: "${_item[index].name}",
+                          productID: "${_item[index].id}",
+                          productQuantity: 1,
+                          price: "${_item[index].price}",
+                          cartCallback: () {
+                            EasyLoading.showSuccess("Add to cart");
+                            Provider.of<BasketProvider>(context, listen: false).addCart(
+                                Cart(
+                                    productID: _item[index].id.toString(),
+                                    productName: "${_item[index].name}",
+                                    productQuantity: 1,
+                                    productThumbnails: _item[index].thumbnail.toString(),
+                                    productPrice: "${_item[index].price.toString()}"
+                                )
+                            );
+                            Future.delayed(
+                              const Duration(seconds: 1),
+                                  () => EasyLoading.dismiss(),
+                            );
+                          },
+                          thumbnails: "${_item[index].thumbnail}",
+                        )
                       ),
                     ),
-                  );
-                }
+                  ),
+                );
+              },
             ),
           );
         } else {
-          return Loading();
+          return SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            child: Center(
+              child: Loading(),
+            ),
+          );
         }
       },
     );

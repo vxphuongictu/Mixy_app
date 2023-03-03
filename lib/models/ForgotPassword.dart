@@ -1,3 +1,6 @@
+/*
+ * Model of forgot password
+ */
 
 class ForgotPassword{
   bool ? message;

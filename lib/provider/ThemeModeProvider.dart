@@ -1,3 +1,8 @@
+/*
+ * state manager of theme mode
+ * it likely setState but you can using it in any screen
+ */
+
 import 'package:flutter/cupertino.dart';
 import 'package:food_e/core/SharedPreferencesClass.dart';
 

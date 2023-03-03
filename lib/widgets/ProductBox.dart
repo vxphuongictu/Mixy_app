@@ -97,6 +97,7 @@ class _ProductBox extends State<ProductBox>
         scale: this._itemScale,
         duration: const Duration(milliseconds: 500),
         child: Container(
+          margin: EdgeInsets.all(10.0),
           width: this.widget.boxWidth,
           height: this.widget.boxHeight,
           decoration: BoxDecoration(

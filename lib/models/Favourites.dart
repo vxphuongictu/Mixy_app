@@ -1,3 +1,6 @@
+/*
+ * Model of favourite
+ */
 
 class Favourites {
   String ? idFavourite;

@@ -1,3 +1,8 @@
+/*
+ * Send query delete user to server
+ * But it not work because server error
+ */
+
 import 'package:food_e/core/GraphQLConfig.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:food_e/functions/queries.dart' as queries;

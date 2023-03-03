@@ -1,10 +1,13 @@
+/*
+ * Handle when click add address
+ */
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:food_e/core/DatabaseManager.dart';
 import 'package:food_e/models/Address.dart';
 import 'package:food_e/screens/Payment/MyPaymentMethod.dart';
-import 'package:food_e/screens/address/AddressSetup.dart';
 import 'package:food_e/screens/address/MyAddress.dart';
 import 'package:food_e/screens/checkout/CheckOut.dart';
 
@@ -25,8 +28,10 @@ handleAddAddress({
   String ? checkOutTotalPrice
   }) async {
 
+  // define type of address
   String type = "";
 
+  // condition
   if (addressLineOne == "") {
     EasyLoading.showError(duration: const Duration(seconds: 3), "Address Line 1 is required");
   } else if (zipCode == "") {
@@ -44,10 +49,12 @@ handleAddAddress({
       type = "Private house";
     }
 
+    // if isDefault has true value, it will change all old address to false
     if (isDefault) {
       await DatabaseManager().updateAddress();
     }
 
+    // add address to db
     await DatabaseManager().insertAddress(address: Address(
       country: country,
       city: city,
@@ -59,11 +66,12 @@ handleAddAddress({
       isShipping: isShipping,
       type: type
     ));
+
     if (screenTitle == null) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => MyPaymentMethod()));
     } else {
       if (checkOutTotalPrice != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOut(totalPrice: checkOutTotalPrice!)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => CheckOut(totalPrice: checkOutTotalPrice)));
       } else {
         Navigator.push(context, MaterialPageRoute(builder: (context) => MyAddress()));
       }

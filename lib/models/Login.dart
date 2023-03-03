@@ -1,3 +1,6 @@
+/*
+ * Model of login
+ */
 
 class Login{
   String ? userID;

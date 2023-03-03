@@ -1,3 +1,7 @@
+/*
+ * Send query get categories to server
+ */
+
 import 'package:food_e/core/GraphQLConfig.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:food_e/functions/queries.dart' as queries;
