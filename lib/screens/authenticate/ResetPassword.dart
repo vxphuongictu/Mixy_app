@@ -100,7 +100,9 @@ class _ResetPassword extends State<ResetPassword>
               label: "RESET PASSWORD",
               color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
             ),
-            Image.asset("assets/images/confirm-image.png"),
+            Center(
+              child: Image.asset("assets/images/confirm-image.png"),
+            ),
             this.resetPasswordScreen(),
             Padding(
               padding: const EdgeInsets.only(bottom: cnf.wcLogoMarginTop, top: cnf.wcLogoMarginTop),

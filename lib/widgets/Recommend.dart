@@ -45,6 +45,7 @@ class _Recommend extends State<Recommend>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
+        double _screenWidth = MediaQuery.of(context).size.width;
         return Padding(
           padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
           child: Column(
@@ -88,7 +89,7 @@ class _Recommend extends State<Recommend>
                       child: ItemBox(
                         productQuantity: 0,
                         productID: this.widget.products[index].id.toString(),
-                        boxWidth: MediaQuery.of(context).size.width / 2 - (cnf.marginScreen * 2),
+                        boxWidth: (_screenWidth > 600) ? MediaQuery.of(context).size.width / 2 - (cnf.marginScreen * 2) : MediaQuery.of(context).size.width / 1.7,
                         price: this.widget.products[index].price.toString(),
                         title: this.widget.products[index].title.toString(),
                         thumbnails: "${this.widget.products[index].thumbnail}",

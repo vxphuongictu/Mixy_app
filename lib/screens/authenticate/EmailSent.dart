@@ -130,9 +130,11 @@ class _EmailSent extends State<EmailSent>
                   fontfamily: "Poppins",
                 )
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .53,
-              child: Image.asset("assets/images/email_has_been_sent.png")
+            Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * .53,
+                child: Image.asset("assets/images/email_has_been_sent.png")
+              ),
             ),
             this.emailSentScreen()
           ],

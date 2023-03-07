@@ -54,12 +54,14 @@ class _AuthenticatedOptionsScreen extends State<AuthenticatedOptionsScreen>
         children: [
           this.logo(context),
           this.getStartText(),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * .4,
-            child: AnimatedScale(
-              duration: const Duration(seconds: 2),
-              scale: this._scaleImage,
-              child: Image.asset('assets/images/LoginTC-cloud-copy@3x-1.png'),
+          Center(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * .4,
+              child: AnimatedScale(
+                duration: const Duration(seconds: 2),
+                scale: this._scaleImage,
+                child: Image.asset('assets/images/LoginTC-cloud-copy@3x-1.png'),
+              ),
             ),
           ),
           this.loginButton(),

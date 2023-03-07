@@ -114,12 +114,15 @@ class _Login extends State<Login>
               label: "LOGIN",
               color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorBlack,
             ),
-            SizedBox(
-              width: double.infinity,
-              child: AnimatedOpacity(
-                opacity: this._visible ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 300),
-                child: Image.asset('assets/images/login.png'),
+            Center(
+              child: SizedBox(
+                width: 300.0,
+                height: 300.0,
+                child: AnimatedOpacity(
+                  opacity: this._visible ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: Image.asset('assets/images/login.png'),
+                ),
               ),
             ),
             this.registerForm()

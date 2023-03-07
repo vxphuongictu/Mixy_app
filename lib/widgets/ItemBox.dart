@@ -129,7 +129,16 @@ class _ItemBox extends State<ItemBox>
                         // width: this.widget.boxWidth,
                         height: cnf.boxItemThumbnailSize,
                         child: OverflowBox(
-                          child: Image.network(this.widget.thumbnails!, fit: BoxFit.cover),
+                          child: Image.network(
+                            this.widget.thumbnails!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const SizedBox(
+                                width: double.infinity,
+                                child: const CircularProgressIndicator(),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       Positioned(

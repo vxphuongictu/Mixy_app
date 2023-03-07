@@ -3,6 +3,7 @@
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/functions/toColor.dart';
 import 'package:food_e/provider/ThemeModeProvider.dart';
@@ -64,56 +65,70 @@ class _BaseScreen extends State<BaseScreen>
   Widget build(BuildContext context) {
 
     final _client = GraphQLConfig.graphInit();
+    final _screenSize = MediaQuery.of(context).size;
 
     return Consumer<ThemeModeProvider> (
       builder: (context, value, child) {
-        return GestureDetector(
-          // unfocus if tap to outside input. Details: https://stackoverflow.com/questions/51652897/how-to-hide-soft-input-keyboard-on-flutter-after-clicking-outside-textfield-anyw
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: GraphQLProvider(
-              client: _client,
-              child: Scaffold(
-                  extendBodyBehindAppBar: this.widget.extendBodyBehindAppBar,
-                  appBar: (this.widget.appbar == true) ? AppBar(
-                    // backgroundColor: (this.widget.appbarBgColor == "")? Colors.transparent : this.widget.appbarBgColor.toColor(),
-                    backgroundColor: (this.widget.appbarBgColor == null) ? (value.darkmode == true) ? cnf.darkModeColorbg.toColor() : cnf.lightModeColorbg.toColor() : this.widget.appbarBgColor,
-                    elevation: (this.widget.appbarBgColor != null) ? 0.0 : null,
-                    title: (this.widget.title != "") ? MyText(
-                      text: this.widget.title,
-                      color: (this.widget.colorTitle != "") ? this.widget.colorTitle! : cnf.colorBlack,
+        if (_screenSize.width >= 320) {
+          return GestureDetector(
+            // unfocus if tap to outside input. Details: https://stackoverflow.com/questions/51652897/how-to-hide-soft-input-keyboard-on-flutter-after-clicking-outside-textfield-anyw
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: GraphQLProvider(
+                client: _client,
+                child: Scaffold(
+                    extendBodyBehindAppBar: this.widget.extendBodyBehindAppBar,
+                    appBar: (this.widget.appbar == true) ? AppBar(
+                      // backgroundColor: (this.widget.appbarBgColor == "")? Colors.transparent : this.widget.appbarBgColor.toColor(),
+                      backgroundColor: (this.widget.appbarBgColor == null)
+                          ? (value.darkmode == true) ? cnf.darkModeColorbg
+                          .toColor() : cnf.lightModeColorbg.toColor()
+                          : this.widget.appbarBgColor,
+                      elevation: (this.widget.appbarBgColor != null)
+                          ? 0.0
+                          : null,
+                      title: (this.widget.title != "") ? MyText(
+                        text: this.widget.title,
+                        color: (this.widget.colorTitle != "") ? this.widget
+                            .colorTitle! : cnf.colorBlack,
+                      ) : null,
+                      leading: (this.widget.leading != null) ? Padding(
+                        padding: EdgeInsets.only(left: cnf.wcLogoMarginLeft),
+                        child: this.widget.leading,
+                      ) : null,
+                      leadingWidth: 80.0,
+                      actions: [
+                        if (this.widget.actions != null) Padding(
+                          padding: const EdgeInsets.only(
+                              right: cnf.wcLogoMarginLeft),
+                          child: this.widget.actions,
+                        )
+                      ],
                     ) : null,
-                    leading: (this.widget.leading != null) ? Padding(
-                      padding: EdgeInsets.only(left: cnf.wcLogoMarginLeft),
-                      child: this.widget.leading,
-                    ) : null,
-                    leadingWidth: 80.0,
-                    actions: [
-                      if (this.widget.actions != null) Padding(
-                        padding: const EdgeInsets.only(right: cnf.wcLogoMarginLeft),
-                        child: this.widget.actions,
-                      )
-                    ],
-                  ) : null,
-                  body: RefreshIndicator(
-                    onRefresh: () async {
-                      setState(() {});
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        // color: (this.widget.screenBgColor!= "") ? this.widget.screenBgColor!.toColor() : null,
-                        color: (value.darkmode == true) ? cnf.darkModeColorbg.toColor() : cnf.lightModeColorbg.toColor(),
+                    body: RefreshIndicator(
+                      onRefresh: () async {
+                        setState(() {});
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          // color: (this.widget.screenBgColor!= "") ? this.widget.screenBgColor!.toColor() : null,
+                          color: (value.darkmode == true) ? cnf.darkModeColorbg
+                              .toColor() : cnf.lightModeColorbg.toColor(),
+                        ),
+                        child: (this.widget.scroll == true) ? ListView(
+                          padding: EdgeInsets.zero,
+                          // shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          children: [this._mainBody()],
+                        ) : this._mainBody(),
                       ),
-                      child: (this.widget.scroll == true) ? ListView(
-                        padding: EdgeInsets.zero,
-                        // shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        children: [this._mainBody()],
-                      ) : this._mainBody(),
-                    ),
-                  )
-              )
-          ),
-        );
+                    )
+                )
+            ),
+          );
+        } else {
+          SystemNavigator.pop();
+          return const SizedBox();
+        }
       },
     );
   }

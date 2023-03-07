@@ -162,7 +162,14 @@ class _Home extends State<Home>
   {
     return Padding(
         padding: EdgeInsets.only(top: this.spaceBetweenFromBannerToHeader),
-        child: Image.asset("assets/images/BannerCard.png", width: double.infinity, fit: BoxFit.cover,)
+        child: SizedBox(
+          width: double.infinity,
+          child: Image.asset(
+            "assets/images/BannerCard.png",
+            width: double.infinity,
+            fit: BoxFit.contain
+          ),
+        )
     );
   }
 
@@ -187,14 +194,16 @@ class _Home extends State<Home>
               SizedBox(
                 height: cnf.boxRestaurantsSize,
                 width: double.infinity,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: this.listRestaurants.length,
-                    itemBuilder: (context, index) => Container(
-                      margin: const EdgeInsets.only(right: cnf.marginScreen, bottom: cnf.marginScreen),
-                      child: RestaurantBox(childWidget: this.listRestaurants[index]),
-                    )
+                child: Center(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: this.listRestaurants.length,
+                      itemBuilder: (context, index) => Container(
+                        margin: const EdgeInsets.only(right: cnf.marginScreen, bottom: cnf.marginScreen),
+                        child: RestaurantBox(childWidget: this.listRestaurants[index]),
+                      )
+                  ),
                 ),
               )
             ],
