@@ -126,10 +126,15 @@ class _CartItem extends State<CartItem>
                           text: "${this.widget.quantity}",
                           fontWeight: FontWeight.w500,
                           fontSize: 14.0,
+                          color: (value.darkmode == true) ? cnf.colorWhite : cnf.colorLightBlack,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
-                          child: FaIcon(FontAwesomeIcons.angleDown, size: 8.0, color: cnf.colorBlack.toColor()),
+                          child: FaIcon(
+                            FontAwesomeIcons.angleDown,
+                            size: 8.0, color:
+                            (value.darkmode == true) ? cnf.colorWhite.toColor() : cnf.colorLightBlack.toColor(),
+                          ),
                         )
                       ],
                     ),
