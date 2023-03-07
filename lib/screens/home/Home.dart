@@ -177,37 +177,38 @@ class _Home extends State<Home>
   {
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
-        return Padding(
-          padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: this.spaceBetweenFromTitleToContent),
-                child: MyText(
-                  text: "RESTAURANTS",
-                  fontFamily: "Bebas Neue",
-                  fontSize: this.fontSize,
-                  color: (value.darkmode == true) ? cnf.lightModeColorbg : cnf.darkModeColorbg,
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen, bottom: spaceBetweenFromTitleToContent),
+              child: MyText(
+                text: "RESTAURANTS",
+                fontFamily: "Bebas Neue",
+                fontSize: this.fontSize,
+                color: (value.darkmode == true) ? cnf.lightModeColorbg : cnf.darkModeColorbg,
+              ),
+            ),
+            SizedBox(
+              height: cnf.boxRestaurantsSize,
+              width: double.infinity,
+              child: Center(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: this.listRestaurants.length,
+                    itemBuilder: (context, index) => Container(
+                      margin: EdgeInsets.only(
+                          left: cnf.marginScreen,
+                          right: (this.listRestaurants.length - index <= 1) ? cnf.marginScreen : 0,
+                          bottom: cnf.marginScreen
+                      ),
+                      child: RestaurantBox(childWidget: this.listRestaurants[index]),
+                    )
                 ),
               ),
-              SizedBox(
-                height: cnf.boxRestaurantsSize,
-                width: double.infinity,
-                child: Center(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: this.listRestaurants.length,
-                      itemBuilder: (context, index) => Container(
-                        margin: const EdgeInsets.only(right: cnf.marginScreen, bottom: cnf.marginScreen),
-                        child: RestaurantBox(childWidget: this.listRestaurants[index]),
-                      )
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         );
       },
     );

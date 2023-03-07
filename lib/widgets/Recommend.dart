@@ -46,12 +46,11 @@ class _Recommend extends State<Recommend>
     return Consumer<ThemeModeProvider>(
       builder: (context, value, child) {
         double _screenWidth = MediaQuery.of(context).size.width;
-        return Padding(
-          padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: cnf.marginScreen, right: cnf.marginScreen),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
@@ -77,15 +76,21 @@ class _Recommend extends State<Recommend>
                   )
                 ],
               ),
-              SizedBox(
-                height: 330.0,
-                width: double.infinity,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: this.widget.products.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: EdgeInsets.only(left: 6.0, right: cnf.marginScreen, top: this.spaceBetweenFromTitleToContent, bottom: this.spaceBetweenFromTitleToContent),
+            ),
+            SizedBox(
+              height: 330.0,
+              width: double.infinity,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: this.widget.products.length,
+                  itemBuilder: (context, index) => Padding(
+                      padding: EdgeInsets.only(
+                          left: cnf.marginScreen,
+                          right: (this.widget.products.length - index <= 1) ? cnf.marginScreen : 0,
+                          top: this.spaceBetweenFromTitleToContent,
+                          bottom: this.spaceBetweenFromTitleToContent
+                      ),
                       child: ItemBox(
                         productQuantity: 0,
                         productID: this.widget.products[index].id.toString(),
@@ -115,11 +120,10 @@ class _Recommend extends State<Recommend>
                           });
                         },
                       )
-                    )
-                ),
-              )
-            ],
-          ),
+                  )
+              ),
+            )
+          ],
         );
       },
     );
