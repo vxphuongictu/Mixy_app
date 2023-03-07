@@ -25,25 +25,29 @@ class Login extends StatefulWidget
 
 class _Login extends State<Login>
 {
-
-  final SharedPreferencesClass _shared = SharedPreferencesClass();
   final double _distanceOfInput = 30.0;
 
-  // text controller email & password
+  /// text controller email & password
   TextEditingController email = TextEditingController(text: "Vxphuongictu998@gmail.com");
   TextEditingController password = TextEditingController(text: "25071998@");
 
-  // show or hidden password
+  /// show or hidden password
   bool _showPassword = true;
 
-  // icon show or hidden password
+  /// icon show or hidden password
   IconData passwordSuffix = Icons.remove_red_eye;
 
-  // fadeIn login image
+  /// fadeIn login image
   bool _visible = false;
 
-  // user address
+  /// user address
   String _routerName = 'bottom-nav-bar-menu/';
+
+  /// define userID
+  late String _userID;
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
 
   @override
   void initState() {
@@ -67,7 +71,7 @@ class _Login extends State<Login>
             firstname: sign_in.firstname,
             userID: sign_in.userID);
         EasyLoading.dismiss();
-        DatabaseManager().fetchAddress().then((value) {
+        DatabaseManager().fetchAddress(userID: sign_in.userID!).then((value) {
           if (value == null) {
             this._routerName = "address-setup/";
           }

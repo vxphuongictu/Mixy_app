@@ -45,7 +45,8 @@ class _OrderFailed extends State<OrderFailed>
                       label: "SOMETHING WENT WRONG!",
                       color: cnf.colorWhite,
                     ),
-                    Expanded(
+                    SizedBox(
+                      width: 200.0,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 50.0, bottom: 50.0),
                         child: Image.asset('assets/images/orderfailed.png'),

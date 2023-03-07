@@ -14,6 +14,7 @@ import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/widgets/CartItem.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class Basket extends StatefulWidget
@@ -28,9 +29,20 @@ class Basket extends StatefulWidget
 class _Basket extends State<Basket>
 {
 
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
   @override
   void initState() {
-    Provider.of<BasketProvider>(context, listen: false).fetchCart(); // load cart
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+        Provider.of<BasketProvider>(context, listen: false).fetchCart(userID: this._userID); // load cart
+      });
+    });
     super.initState();
   }
 
@@ -113,7 +125,7 @@ class _Basket extends State<Basket>
                               onTap: () {
                                 EasyLoading.show(status: "Waiting ...");
                                 Provider.of<BasketProvider>(
-                                    context, listen: false).clearCart();
+                                    context, listen: false).clearCart(userID: this._userID);
                                 EasyLoading.showSuccess("Done");
                               },
                               child: MyText(
@@ -233,7 +245,7 @@ class _Basket extends State<Basket>
                       screentype: 0,
                       onDelete: () {
                         EasyLoading.show(status: "Deleting ...");
-                        Provider.of<BasketProvider>(context, listen: false).removeCart("${listCart[index].productID}");
+                        Provider.of<BasketProvider>(context, listen: false).removeCart(id: "${listCart[index].productID}", userID: this._userID);
                         EasyLoading.showSuccess("Done");
                       },
                       quantity: "${listCart[index].productQuantity}",

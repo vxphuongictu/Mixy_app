@@ -12,6 +12,7 @@ class Address {
   bool isDefault;
   bool isPickup;
   bool isShipping;
+  String ? userID;
 
   Address({
     this.addressLineOne,
@@ -22,7 +23,8 @@ class Address {
     this.type,
     this.isDefault = false,
     this.isPickup = false,
-    this.isShipping = false
+    this.isShipping = false,
+    this.userID
   });
 
   factory Address.formJson(Map<String, dynamic> json) {
@@ -35,7 +37,8 @@ class Address {
       type: json['type'],
       isPickup: json['isPickup'],
       isDefault: json['isDefault'],
-      isShipping: json['isShipping']
+      isShipping: json['isShipping'],
+      userID: json['userID']
     );
   }
 
@@ -49,7 +52,8 @@ class Address {
       'type': type,
       'isPickup': (isPickup) ? 1 : 0,
       'isDefault': (isDefault) ? 1 : 0,
-      'isShipping': (isShipping) ? 1 : 0
+      'isShipping': (isShipping) ? 1 : 0,
+      'userID' : userID
     };
     return map;
   }

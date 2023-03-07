@@ -16,24 +16,24 @@ class BasketProvider with ChangeNotifier
 
   Future<void> addCart(Cart item) async {
     await DatabaseManager().insertCart(cart: item);
-    this.fetchCart();
+    this.fetchCart(userID: item.userID);
   }
 
-  Future<void> removeCart(String id) async {
-    await DatabaseManager().removeItemInCart(id);
+  Future<void> removeCart({required String id, required String userID}) async {
+    await DatabaseManager().removeItemInCart(id: id, userID: userID);
     _card.removeWhere((cartItem) => cartItem.productID == id);
     notifyListeners();
   }
 
-  Future<void> clearCart() async {
-    await DatabaseManager().clearCart();
+  Future<void> clearCart({required String userID}) async {
+    await DatabaseManager().clearCart(userID: userID);
     _card = [];
     notifyListeners();
   }
 
-  void fetchCart() {
+  void fetchCart({required String userID}) {
     _card = [];
-    DatabaseManager().fetchCart().then((value){
+    DatabaseManager().fetchCart(userID: userID).then((value){
       value.forEach((element) {
         _card.add(
           Cart(
@@ -41,7 +41,8 @@ class BasketProvider with ChangeNotifier
               productName: element['productName'],
               productQuantity: element['productQuantity'],
               productThumbnails: element['productThumbnails'],
-              productPrice: element['productPrice']
+              productPrice: element['productPrice'],
+              userID: element['userID']
           )
         );
       });

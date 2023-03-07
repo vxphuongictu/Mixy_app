@@ -12,6 +12,7 @@ import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/widgets/ButtonContainer.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class ProductBox extends StatefulWidget
@@ -50,6 +51,12 @@ class ProductBox extends StatefulWidget
 class _ProductBox extends State<ProductBox>
 {
 
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
   final double spaceBetween = 10.0;
   double _itemScale = 1.0;
   bool isFavourite = false;
@@ -60,7 +67,8 @@ class _ProductBox extends State<ProductBox>
           idFavourite: this.widget.productID!,
           nameFavourite: this.widget.title,
           priceFavourite: this.widget.price,
-          thumbnailFavourite: this.widget.thumbnails!
+          thumbnailFavourite: this.widget.thumbnails!,
+          userID: this._userID
       ),
     );
     setState(() {
@@ -71,12 +79,18 @@ class _ProductBox extends State<ProductBox>
 
   @override
   void initState() {
-    super.initState();
-    DatabaseManager().checkFavourite(id: this.widget.productID).then((value){
+    _shared.get_user_info().then((value) {
       setState(() {
-        this.isFavourite = value;
+        this._userID = value.userID;
+      });
+
+      DatabaseManager().checkFavourite(id: this.widget.productID, userID: this._userID).then((value){
+        setState(() {
+          this.isFavourite = value;
+        });
       });
     });
+    super.initState();
   }
 
   @override

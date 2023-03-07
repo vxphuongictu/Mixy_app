@@ -11,6 +11,8 @@ import 'package:food_e/screens/product/ProductDetail.dart';
 import 'package:food_e/widgets/ItemBox.dart';
 import 'package:food_e/widgets/Loading.dart';
 import 'package:food_e/requests/searchProducts.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
+
 
 class SearchHandle extends StatefulWidget
 {
@@ -30,15 +32,27 @@ class SearchHandle extends StatefulWidget
 class _SearchHandle extends State<SearchHandle>
 {
 
-  // space between
+  /// space between
   final double spaceBetweenFromTitleToContent = 40.0;
 
-  // has data
+  /// has data
   List<Products> ? _response;
+
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
 
   @override
   void initState() {
     super.initState();
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+    });
+
     searchProduct(name: this.widget.searchText).then((value) {
       setState(() {
         this._response = value;
@@ -83,6 +97,7 @@ class _SearchHandle extends State<SearchHandle>
           itemCount: this._response!.length,
           itemBuilder: (context, index) {
             return ItemBox(
+              userID: this._userID,
               title: "${this._response?[index].title}",
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => ProductDetail(id: "${this._response?[index].id}"))
@@ -95,7 +110,8 @@ class _SearchHandle extends State<SearchHandle>
                         productName: "${this._response?[index].title.toString()}",
                         productQuantity: 1,
                         productThumbnails: "${this._response?[index].thumbnail}",
-                        productPrice: "${this._response?[index].price.toString()}"
+                        productPrice: "${this._response?[index].price.toString()}",
+                        userID: this._userID
                     )
                 ).then((value){
                   Future.delayed(

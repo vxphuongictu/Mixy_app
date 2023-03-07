@@ -25,7 +25,8 @@ handleAddAddress({
   bool isDefault = false,
   bool isPickup = false,
   bool isShipping = false,
-  String ? checkOutTotalPrice
+  String ? checkOutTotalPrice,
+  required String userID
   }) async {
 
   // define type of address
@@ -51,7 +52,7 @@ handleAddAddress({
 
     // if isDefault has true value, it will change all old address to false
     if (isDefault) {
-      await DatabaseManager().updateAddress();
+      await DatabaseManager().updateAddress(userID: userID);
     }
 
     // add address to db
@@ -64,7 +65,8 @@ handleAddAddress({
       isDefault: isDefault,
       isPickup: isPickup,
       isShipping: isShipping,
-      type: type
+      type: type,
+      userID: userID
     ));
 
     if (screenTitle == null) {

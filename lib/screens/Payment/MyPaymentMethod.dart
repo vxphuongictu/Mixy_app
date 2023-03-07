@@ -12,6 +12,7 @@ import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/core/DatabaseManager.dart';
 import 'package:food_e/functions/card/replaceCardNumber.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class MyPaymentMethod extends StatefulWidget
@@ -22,17 +23,29 @@ class MyPaymentMethod extends StatefulWidget
 
 class _MyPaymentMethod extends State<MyPaymentMethod> {
 
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
   List<dynamic> _listCard = [];
 
   @override
   void initState() {
     super.initState();
-    DatabaseManager().fetchCard().then((value) {
-      if (value != null) {
-        setState(() {
-          this._listCard = value;
-        });
-      }
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+
+      DatabaseManager().fetchCard(userID: this._userID).then((value) {
+        if (value != null) {
+          setState(() {
+            this._listCard = value;
+          });
+        }
+      });
     });
   }
 
@@ -121,10 +134,10 @@ class _MyPaymentMethod extends State<MyPaymentMethod> {
                 dismissible: DismissiblePane(
                   onDismissed: () {
                     EasyLoading.show(status: "Deleting ...");
-                    DatabaseManager().removeItemInCard(id: this._listCard[index]['id']).then((value){
+                    DatabaseManager().removeItemInCard(id: this._listCard[index]['id'], userID: this._userID).then((value){
                       EasyLoading.showSuccess("Done");
                       setState(() {
-                        DatabaseManager().fetchCard().then((value) {
+                        DatabaseManager().fetchCard(userID: this._userID).then((value) {
                           this._listCard = value;
                         });
                       });

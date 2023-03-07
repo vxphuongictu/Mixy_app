@@ -11,6 +11,7 @@ import 'package:food_e/widgets/LargeButton.dart';
 import 'package:food_e/widgets/MyText.dart';
 import 'package:food_e/widgets/MyTitle.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class MyAddress extends StatefulWidget
@@ -23,15 +24,28 @@ class _MyAddress extends State<MyAddress> {
 
   List<dynamic> address = [];
 
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
   @override
   void initState() {
     super.initState();
-    DatabaseManager().fetchAddress().then((value) {
-      if (value != null && value.isNotEmpty) {
-        setState(() {
-          this.address = value;
-        });
-      }
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+
+      DatabaseManager().fetchAddress(userID: this._userID).then((value) {
+        if (value != null && value.isNotEmpty) {
+          setState(() {
+            this.address = value;
+          });
+        }
+      });
+
     });
   }
 
@@ -118,7 +132,7 @@ class _MyAddress extends State<MyAddress> {
   {
     return ListView.builder(
       shrinkWrap: true,
-      padding: EdgeInsets.only(top: cnf.wcLogoMarginTop),
+      padding: const EdgeInsets.only(top: cnf.wcLogoMarginTop),
       itemCount: this.address.length,
       itemBuilder:(context, index) {
         return this.detailItem(
@@ -143,10 +157,10 @@ class _MyAddress extends State<MyAddress> {
               dismissible: DismissiblePane(
                 onDismissed: () {
                   EasyLoading.show(status: "Deleting ...");
-                  DatabaseManager().removeAddress(id: id).then((value){
+                  DatabaseManager().removeAddress(id: id, userID: this._userID).then((value){
                     EasyLoading.showSuccess("Done");
                     setState(() {
-                      DatabaseManager().fetchAddress().then((value) {
+                      DatabaseManager().fetchAddress(userID: this._userID).then((value) {
                         this.address = value;
                       });
                     });

@@ -15,7 +15,7 @@ class LikedProvider with ChangeNotifier
 
   Future<void> like({required Favourites item}) async {
     await DatabaseManager().favourite(item: item);
-    checkFavourite(item.idFavourite!).then((value){
+    checkFavourite(id: item.idFavourite!, userID: item.userID!).then((value){
       if (value == false) {
         _liked.add(item);
       } else {
@@ -25,28 +25,29 @@ class LikedProvider with ChangeNotifier
     notifyListeners();
   }
 
-  Future<void> removeLiked(String id) async {
-    await DatabaseManager().removeItemInFavourite(id: id);
+  Future<void> removeLiked({required String id, required String userID}) async {
+    await DatabaseManager().removeItemInFavourite(id: id, userID: userID);
     _liked.removeWhere((likedItem) => likedItem.idFavourite == id);
     notifyListeners();
   }
 
-  Future<void> clearLiked() async {
-    await DatabaseManager().clearFavourite();
+  Future<void> clearLiked({required String userID}) async {
+    await DatabaseManager().clearFavourite(userID: userID);
     _liked = [];
-    this.fetchLiked();
+    this.fetchLiked(userID: userID);
   }
 
-  Future<void> fetchLiked() async {
+  Future<void> fetchLiked({required String userID}) async {
     _liked = [];
-    DatabaseManager().fetchFavouriteItem().then((value){
+    DatabaseManager().fetchFavouriteItem(userID: userID).then((value){
       value.forEach((element) {
         _liked.add(
           Favourites(
             idFavourite: element['idFavourite'],
             nameFavourite: element['nameFavourite'],
             priceFavourite: element['priceFavourite'],
-            thumbnailFavourite: element['thumbnailFavourite']
+            thumbnailFavourite: element['thumbnailFavourite'],
+            userID: userID
           )
         );
       });
@@ -54,8 +55,8 @@ class LikedProvider with ChangeNotifier
     });
   }
 
-  checkFavourite(String id) async {
-    bool _isFavourite = await DatabaseManager().checkFavourite(id: id);
+  checkFavourite({required String id, required String userID}) async {
+    bool _isFavourite = await DatabaseManager().checkFavourite(id: id, userID: userID);
     notifyListeners();
     return _isFavourite;
   }

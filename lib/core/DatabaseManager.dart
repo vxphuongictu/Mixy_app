@@ -37,6 +37,7 @@ class DatabaseManager
   static const String productQuantity = 'productQuantity';
   static const String productThumbnails = 'productThumbnails';
   static const String productPrice = 'productPrice';
+  static const String cart_userID = 'userID';
 
   // table favourite
   static const String favourite_tb_name = "favourites";
@@ -44,6 +45,7 @@ class DatabaseManager
   static const String nameFavourite = 'nameFavourite';
   static const String thumbnailFavourite = 'thumbnailFavourite';
   static const String priceFavourite = 'priceFavourite';
+  static const String favourite_userID = 'userID';
 
   // table address
   static const String addr_tb_name = "address";
@@ -57,6 +59,7 @@ class DatabaseManager
   static const String address_is_default = "isDefault";
   static const String address_is_pickup = "isPickup";
   static const String address_is_shipping = "isShipping";
+  static const String address_userID = "userID";
 
 
   // table card
@@ -66,6 +69,7 @@ class DatabaseManager
   static const String card_expiration = "expiryDate";
   static const String card_cvv = "cvv";
   static const String card_isDefault = "isDefault";
+  static const String card_userID = "userID";
 
   Future<Database> get db async {
     if (_db != null) {
@@ -86,7 +90,7 @@ class DatabaseManager
   _createTable(Database db, int version) async {
     /* table products */
     await db.execute("CREATE TABLE $prd_tb_name ("
-        "$prd_id INT PRIMARY KEY, "
+        "$prd_id VARCHAR(255),"
         "$prd_name VARCHAR(255), "
         "$prd_title VARCHAR(255), "
         "$prd_description TEXT, "
@@ -97,19 +101,21 @@ class DatabaseManager
 
     /* table cart */
     await db.execute("CREATE TABLE $cart_tb_name ("
-      "$productID VARCHAR(255) PRIMARY KEY,"
+      "$productID VARCHAR(255),"
       "$productName VARCHAR(255),"
       "$productQuantity INT,"
       "$productThumbnails VARCHAR(255),"
-      "$productPrice VARCHAR (100)"
+      "$productPrice VARCHAR (100),"
+      "$cart_userID VARCHAR (100)"
       ")");
 
     /* table favourite */
     await db.execute("CREATE TABLE $favourite_tb_name ("
-        "$idFavourite VARCHAR(255) PRIMARY KEY,"
+        "$idFavourite VARCHAR(255),"
         "$nameFavourite VARCHAR(255),"
         "$thumbnailFavourite VARCHAR(255),"
-        "$priceFavourite VARCHAR(100)"
+        "$priceFavourite VARCHAR(100),"
+        "$favourite_userID VARCHAR (100)"
         ")");
 
     /* table address */
@@ -123,7 +129,8 @@ class DatabaseManager
         "$address_type VARCHAR(50),"
         "$address_is_default INTEGER,"
         "$address_is_pickup INTEGER,"
-        "$address_is_shipping INTEGER"
+        "$address_is_shipping INTEGER,"
+        "$address_userID VARCHAR(100)"
         ")");
 
     /* table card */
@@ -132,7 +139,8 @@ class DatabaseManager
         "$card_number VARCHAR(255),"
         "$card_expiration VARCHAR(50),"
         "$card_cvv VARCHAR(100),"
-        "$card_isDefault INTEGER"
+        "$card_isDefault INTEGER,"
+        "$card_userID VARCHAR(100)"
         ")");
   }
 
@@ -158,10 +166,10 @@ class DatabaseManager
   /* Table Cart */
   insertCart({required Cart cart}) async {
     final dbClient = await db;
-    Map<String, dynamic> cart_info = json.decode(await this.checkCart(id: cart.productID));
+    Map<String, dynamic> cart_info = json.decode(await this.checkCart(id: cart.productID, userID: cart.userID));
     if (cart_info['productID'] != "") {
       int productQuantityUpdate = int.parse(cart_info['productQuantity']) + cart.productQuantity;
-      final response = await dbClient.rawUpdate('UPDATE ${cart_tb_name} SET ${productQuantity} = ? WHERE ${productID} = ?', [productQuantityUpdate, cart.productID]);
+      final response = await dbClient.rawUpdate('UPDATE ${cart_tb_name} SET ${productQuantity} = ? WHERE ${productID} = ? AND ${cart_userID} = ?', [productQuantityUpdate, cart.productID, cart.userID]);
       return response;
     } else {
       final response = await dbClient.insert("${cart_tb_name}", cart.toMap());
@@ -169,16 +177,16 @@ class DatabaseManager
     }
   }
 
-  Future<List<dynamic>> fetchCart() async {
+  Future<List<dynamic>> fetchCart({required String userID}) async {
     final dbClient = await db;
-    final result = await dbClient.query("${cart_tb_name}");
+    final result = await dbClient.query("${cart_tb_name} WHERE ${cart_userID} = ?", whereArgs: [userID]);
     return result;
   }
 
-  checkCart({required String? id}) async {
+  checkCart({required String? id, required String userID}) async {
     final dbClient = await db;
     dynamic item = {"${productID}" : "", "${productQuantity}": ""};
-    final result = await dbClient.query("${cart_tb_name}", where: '${productID} = ?', whereArgs: [id]);
+    final result = await dbClient.query("${cart_tb_name}", where: '${productID} = ? AND ${cart_userID} = ?', whereArgs: [id, userID]);
     if (result.length > 0) {
       item['${productID}'] = "${result[0]['productID']}";
       item['${productQuantity}'] = "${result[0]['productQuantity']}";
@@ -186,51 +194,51 @@ class DatabaseManager
     return jsonEncode(item);
   }
 
-  clearCart() async {
+  clearCart({required String userID}) async {
     final dbClient = await db;
-    return await dbClient.delete('${cart_tb_name}');
+    return await dbClient.delete('${cart_tb_name} where ${cart_userID} = ?', whereArgs: [userID]);
   }
 
-  removeItemInCart(String ? id) async {
+  removeItemInCart({required String ? id, required String userID}) async {
     final dbClient = await db;
-    return await dbClient.delete('${cart_tb_name}', where: '${productID} = ?', whereArgs: [id]);
+    return await dbClient.delete('${cart_tb_name}', where: '${productID} = ? and ${cart_userID} = ?', whereArgs: [id, userID]);
   }
 
   /* table favourites */
   favourite({required Favourites item}) async {
     final dbClient = await db;
-    this.checkFavourite(id: item.idFavourite).then((value) async {
+    this.checkFavourite(id: item.idFavourite, userID: item.userID).then((value) async {
       if (value == true) {
-        await dbClient.delete('${favourite_tb_name}', where: '${idFavourite} = ?', whereArgs: [item.idFavourite]);
+        await dbClient.delete('${favourite_tb_name}', where: '${idFavourite} = ? and ${favourite_userID} = ?', whereArgs: [item.idFavourite, item.userID]);
       } else {
         await dbClient.insert('${favourite_tb_name}', item.toMap());
       }
     });
   }
 
-  checkFavourite({required String? id}) async {
+  checkFavourite({required String? id, required String userID}) async {
     final dbClient = await db;
-    final result = await dbClient.query("${favourite_tb_name}", where: '${idFavourite} = ?', whereArgs: [id]);
+    final result = await dbClient.query("${favourite_tb_name}", where: '${idFavourite} = ? and ${favourite_userID} = ?', whereArgs: [id, userID]);
     if (result.length > 0) {
       return true;
     }
     return false;
   }
 
-  fetchFavouriteItem() async {
+  fetchFavouriteItem({required String userID}) async {
     final dbClient = await db;
-    final result = await dbClient.query("${favourite_tb_name}");
+    final result = await dbClient.query("${favourite_tb_name}", where: "${favourite_userID} = ?", whereArgs: [userID]);
     return result;
   }
 
-  removeItemInFavourite({required String id}) async {
+  removeItemInFavourite({required String id, required String userID}) async {
     final dbClient = await db;
-    return await dbClient.delete('${favourite_tb_name}', where: '${idFavourite} = ?', whereArgs: [id]);
+    return await dbClient.delete('${favourite_tb_name}', where: '${idFavourite} = ? and ${favourite_userID} = ?', whereArgs: [id, userID]);
   }
 
-  clearFavourite() async {
+  clearFavourite({required String userID}) async {
     final dbClient = await db;
-    return await dbClient.delete('${favourite_tb_name}');
+    return await dbClient.delete('${favourite_tb_name}', where: "${favourite_userID} = ?", whereArgs: [userID]);
   }
 
   /* Table Address */
@@ -240,10 +248,10 @@ class DatabaseManager
     return insert;
   }
 
-  fetchAddress() async {
+  fetchAddress({required String userID}) async {
     final dbClient = await db;
     try {
-      final result = await dbClient.query("${addr_tb_name}", orderBy: "${address_is_default} DESC");
+      final result = await dbClient.query("${addr_tb_name}", orderBy: "${address_is_default} DESC", where: "${address_userID} = ?", whereArgs: [userID]);
       return result;
     } catch (e) {
       //
@@ -251,10 +259,10 @@ class DatabaseManager
     return null;
   }
 
-  getDefaultAddress() async {
+  getDefaultAddress({required String userID}) async {
     final dbClient = await db;
     try {
-      final result = await dbClient.query("${addr_tb_name}", where: "${address_is_default} = ?", whereArgs: [1]);
+      final result = await dbClient.query("${addr_tb_name}", where: "${address_is_default} = ? and ${address_userID} = ?", whereArgs: [1, userID]);
       return result;
     } catch (e) {
       //
@@ -262,18 +270,18 @@ class DatabaseManager
     return null;
   }
 
-  updateAddress() async {
+  updateAddress({required String userID}) async {
     final dbClient = await db;
     try {
-      await dbClient.rawUpdate('UPDATE ${addr_tb_name} SET ${address_is_default} = ?', [0]);
+      await dbClient.rawUpdate('UPDATE ${addr_tb_name} SET ${address_is_default} = ? WHERE ${address_userID} = ?',[0, userID]);
     } catch(e) {
       //
     }
   }
 
-  removeAddress({required int ? id}) async {
+  removeAddress({required int ? id, required String userID}) async {
     final dbClient = await db;
-    return await dbClient.delete('${addr_tb_name}', where: '${addressID} = ?', whereArgs: [id]);
+    return await dbClient.delete('${addr_tb_name}', where: '${addressID} = ? and ${address_userID} = ?', whereArgs: [id, userID]);
   }
 
   /* Table Card */
@@ -283,19 +291,19 @@ class DatabaseManager
     return insert;
   }
 
-  updateCard() async {
+  updateCard({required String userID}) async {
     final dbClient = await db;
     try {
-      await dbClient.rawUpdate('UPDATE ${card_tb_name} SET ${card_isDefault} = ?', [0]);
+      await dbClient.rawUpdate('UPDATE ${card_tb_name} SET ${card_isDefault} = ? and ${card_userID}', [0, userID]);
     } catch(e) {
       //
     }
   }
 
-  fetchCard() async {
+  fetchCard({required String userID}) async {
     final dbClient = await db;
     try {
-      final result = await dbClient.query("${card_tb_name}", orderBy: "${card_isDefault} DESC");
+      final result = await dbClient.query("${card_tb_name}", orderBy: "${card_isDefault} DESC", where: "${card_userID} = ?", whereArgs: [userID]);
       return result;
     } catch (e) {
       //
@@ -303,8 +311,8 @@ class DatabaseManager
     return null;
   }
 
-  removeItemInCard({required int id}) async {
+  removeItemInCard({required int id, required String userID}) async {
     final dbClient = await db;
-    return await dbClient.delete('${card_tb_name}', where: '${cardID} = ?', whereArgs: [id]);
+    return await dbClient.delete('${card_tb_name}', where: '${cardID} = ? and ${card_userID} = ?', whereArgs: [id, userID]);
   }
 }

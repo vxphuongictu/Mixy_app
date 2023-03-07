@@ -7,12 +7,14 @@ class Favourites {
   String ? nameFavourite;
   String ? thumbnailFavourite;
   String ? priceFavourite;
+  String userID;
 
   Favourites({
     this.idFavourite,
     this.nameFavourite,
     this.thumbnailFavourite,
-    this.priceFavourite
+    this.priceFavourite,
+    required this.userID
   });
 
   factory Favourites.formJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class Favourites {
         nameFavourite: json['nameFavourite'],
         thumbnailFavourite: json['thumbnailFavourite'],
         priceFavourite: json['priceFavourite'],
+        userID: json['userID']
     );
   }
 
@@ -30,6 +33,7 @@ class Favourites {
       'nameFavourite': nameFavourite,
       'thumbnailFavourite': thumbnailFavourite,
       'priceFavourite': priceFavourite,
+      'userID': userID
     };
     return map;
   }

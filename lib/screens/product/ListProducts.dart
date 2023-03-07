@@ -14,6 +14,7 @@ import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/requests/fetchProducts.dart';
 import 'package:food_e/widgets/ProductBox.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class ListProducts extends StatefulWidget
@@ -28,12 +29,24 @@ class ListProducts extends StatefulWidget
 class _ListProducts extends State<ListProducts>
 {
 
+  /// fetch product list
   late Future<List<Products>> _products;
+
+  /// define userID
+  late String _userID;
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
 
   @override
   void initState() {
     super.initState();
     _products = fetch_products();
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+    });
   }
 
 
@@ -122,7 +135,8 @@ class _ListProducts extends State<ListProducts>
                                     productName: "${_item[index].name}",
                                     productQuantity: 1,
                                     productThumbnails: _item[index].thumbnail.toString(),
-                                    productPrice: "${_item[index].price.toString()}"
+                                    productPrice: "${_item[index].price.toString()}",
+                                    userID: this._userID
                                 )
                             );
                             Future.delayed(

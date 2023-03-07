@@ -13,6 +13,7 @@ import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/core/_config.dart' as cnf;
 import 'package:food_e/widgets/CartItem.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class Liked extends StatefulWidget
@@ -26,9 +27,21 @@ class Liked extends StatefulWidget
 
 class _Liked extends State<Liked>
 {
+
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
   @override
   void initState() {
-    Provider.of<LikedProvider>(context, listen: false).fetchLiked();
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+        Provider.of<LikedProvider>(context, listen: false).fetchLiked(userID: this._userID);
+      });
+    });
     super.initState();
   }
 
@@ -84,8 +97,7 @@ class _Liked extends State<Liked>
                           child: GestureDetector(
                             onTap: () {
                               EasyLoading.show(status: "Waiting ...");
-                              Provider.of<LikedProvider>(context, listen: false)
-                                  .clearLiked();
+                              Provider.of<LikedProvider>(context, listen: false).clearLiked(userID: this._userID);
                               EasyLoading.showSuccess("Done");
                             },
                             child: MyText(
@@ -149,7 +161,9 @@ class _Liked extends State<Liked>
                                     productName: "${_item[index].nameFavourite}",
                                     productQuantity: 1,
                                     productThumbnails: _item[index].thumbnailFavourite.toString(),
-                                    productPrice: "${_item[index].priceFavourite.toString()}")
+                                    productPrice: "${_item[index].priceFavourite.toString()}",
+                                    userID: this._userID,
+                                )
                             );
                             Future.delayed(
                               const Duration(seconds: 1),
@@ -158,7 +172,7 @@ class _Liked extends State<Liked>
                           },
                           onDelete: () async {
                             EasyLoading.showSuccess("Deleted");
-                            Provider.of<LikedProvider>(context, listen: false).removeLiked(_item[index].idFavourite.toString());
+                            Provider.of<LikedProvider>(context, listen: false).removeLiked(id: _item[index].idFavourite.toString(), userID: this._userID);
                             Future.delayed(
                               const Duration(seconds: 1),
                                   () => EasyLoading.dismiss(),

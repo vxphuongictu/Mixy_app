@@ -20,6 +20,7 @@ import 'package:food_e/widgets/Loading.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:food_e/models/Cart.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class ProductDetail extends StatefulWidget
@@ -36,7 +37,7 @@ class ProductDetail extends StatefulWidget
 
 class _ProductDetailState extends State<ProductDetail>
 {
-  // screen config
+  /// screen config
   final spaceFromTitleToBanner = 20.0;
   final spaceFromDescToTitle = 30.0;
   final spaceFromDescToContent = 10.0;
@@ -45,22 +46,34 @@ class _ProductDetailState extends State<ProductDetail>
   final spaceFromQuantityTitleToInput = 5.0;
   final appbarIconSize = 18.0;
 
-  // define _productDetails as Future
+  /// define _productDetails as Future
   late Future<ProductDetails> _productDetails;
 
-  // define quantity input
+  /// define quantity input
   TextEditingController quantityController = TextEditingController();
 
-  // define list of banner
+  /// define list of banner
   List<BannerModel> listBanner = [];
 
-  // define title to share
+  /// define title to share
   String ? _titleOfShare = 'Share Me';
   String ? _contentOfShare = 'Vu Xuan Phuong';
+
+  /// define userID
+  late String _userID;
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
 
 
   @override
   void initState() {
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+    });
+
     this._productDetails = product_detail(id: this.widget.id);
     this._productDetails.then((value) => setState((){
       this._titleOfShare = value.title;
@@ -317,6 +330,7 @@ class _ProductDetailState extends State<ProductDetail>
                                     productQuantity: int.parse(this.quantityController.text),
                                     productPrice: "${data?.price}",
                                     productThumbnails: "${data?.galleryImages![0]['sourceUrl']}",
+                                    userID: this._userID
                                   ),
                                 );
                                 EasyLoading.showSuccess("Add to cart");

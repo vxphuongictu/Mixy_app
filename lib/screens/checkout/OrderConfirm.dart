@@ -47,7 +47,8 @@ class _OrderConfirm extends State<OrderConfirm>
                       label: "ORDER CONFIRMED!",
                       color: cnf.colorWhite,
                     ),
-                    Expanded(
+                    SizedBox(
+                      width: 200.0,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 50.0, bottom: 50.0),
                         child: Image.asset('assets/images/orderconfirm.png'),

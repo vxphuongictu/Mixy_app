@@ -27,6 +27,7 @@ class ItemBox extends StatefulWidget
   double boxHeight;
   int ? productQuantity;
   GestureTapCallback ? onTap;
+  String userID;
 
 
   ItemBox({
@@ -39,6 +40,7 @@ class ItemBox extends StatefulWidget
     this.boxWidth=cnf.boxItemMaxSize,
     this.boxHeight=250.0,
     this.onTap=null,
+    required this.userID
   });
 
   @override
@@ -61,7 +63,8 @@ class _ItemBox extends State<ItemBox>
           idFavourite: this.widget.productID!,
           nameFavourite: this.widget.title,
           priceFavourite: this.widget.price,
-          thumbnailFavourite: this.widget.thumbnails!
+          thumbnailFavourite: this.widget.thumbnails!,
+          userID: this.widget.userID
       ),
     );
     setState(() {
@@ -72,7 +75,7 @@ class _ItemBox extends State<ItemBox>
 
   @override
   void initState() {
-    Provider.of<LikedProvider>(context, listen: false).checkFavourite(this.widget.productID!).then((value){
+    Provider.of<LikedProvider>(context, listen: false).checkFavourite(id: this.widget.productID!, userID: this.widget.userID).then((value){
       this.isFavourite = value;
     });
     super.initState();
@@ -183,7 +186,7 @@ class _ItemBox extends State<ItemBox>
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 child: SizedBox()
               ),
               Padding(

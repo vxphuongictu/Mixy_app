@@ -12,7 +12,7 @@ import 'package:food_e/screens/Payment/MyPaymentMethod.dart';
 import 'package:food_e/screens/checkout/CheckOut.dart';
 
 
-void handleAddCard({required BuildContext context, String ? title, String ? cardNumber, String ? expiryDate, String ? cvv, String ? checkOutTotalPrice, bool ? isDefault = false}) async
+void handleAddCard({required BuildContext context, String ? title, String ? cardNumber, String ? expiryDate, String ? cvv, String ? checkOutTotalPrice, bool ? isDefault = false, required String userID}) async
 {
   // condition check
   if (cardNumber == "") {
@@ -26,7 +26,7 @@ void handleAddCard({required BuildContext context, String ? title, String ? card
 
     // if set new card is default, it need to update all old card to not default
     if (isDefault == true) {
-      await DatabaseManager().updateCard();
+      await DatabaseManager().updateCard(userID: userID);
     }
 
     // insert new card to db
@@ -35,6 +35,7 @@ void handleAddCard({required BuildContext context, String ? title, String ? card
       cardNumber: cardNumber,
       expiryDate: expiryDate,
       isDefault: isDefault,
+      userID: userID
     ));
     await Future.delayed(
       const Duration(seconds: 3),

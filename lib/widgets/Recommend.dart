@@ -9,6 +9,7 @@ import 'package:food_e/screens/product/ProductDetail.dart';
 import 'package:food_e/widgets/ItemBox.dart';
 import 'package:food_e/widgets/MyText.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class Recommend extends StatefulWidget
@@ -33,8 +34,24 @@ class _Recommend extends State<Recommend>
 
   final double fontSize = 18.0;
   final double spaceBetweenFromTitleToContent = 40.0;
-  // font size of title
+  /// font size of title
   final double fontSizeTitle = 14.0;
+
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
+  @override
+  void initState() {
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +111,11 @@ class _Recommend extends State<Recommend>
                       child: ItemBox(
                         productQuantity: 0,
                         productID: this.widget.products[index].id.toString(),
-                        boxWidth: (_screenWidth > 600) ? MediaQuery.of(context).size.width / 2 - (cnf.marginScreen * 2) : MediaQuery.of(context).size.width / 1.7,
+                        boxWidth: (_screenWidth > 400) ? MediaQuery.of(context).size.width / 2 - (cnf.marginScreen * 2) : MediaQuery.of(context).size.width / 1.7,
                         price: this.widget.products[index].price.toString(),
                         title: this.widget.products[index].title.toString(),
                         thumbnails: "${this.widget.products[index].thumbnail}",
+                        userID: this._userID,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ProductDetail(id: this.widget.products[index].id)),
@@ -110,7 +128,8 @@ class _Recommend extends State<Recommend>
                                   productName: this.widget.products[index].title.toString(),
                                   productQuantity: 1,
                                   productThumbnails: "${this.widget.products[index].thumbnail}",
-                                  productPrice: this.widget.products[index].price.toString()
+                                  productPrice: this.widget.products[index].price.toString(),
+                                  userID: this._userID
                               )
                           ).then((value) {
                             Future.delayed(

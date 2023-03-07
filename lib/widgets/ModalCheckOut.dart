@@ -2,9 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:food_e/core/DatabaseManager.dart';
 import 'package:food_e/functions/toColor.dart';
+import 'package:food_e/provider/BasketProvider.dart';
 import 'package:food_e/provider/ThemeModeProvider.dart';
 import 'package:food_e/screens/Payment/MyPaymentMethod.dart';
-import 'package:food_e/screens/address/AddressSetup.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 import 'package:food_e/screens/address/MyAddress.dart';
 import 'package:food_e/screens/checkout/OrderConfirm.dart';
 import 'package:food_e/screens/checkout/OrderFailed.dart';
@@ -39,6 +40,12 @@ class _ModalCheckout extends State<ModalCheckOut>
   String currentLocationName = "";
   String ? currentCardNumber;
 
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
   /*
    - define order info. You need create a model or get it in end point in your productions
    - Because my enpoint did not support this info so I define it in below to test
@@ -50,7 +57,7 @@ class _ModalCheckout extends State<ModalCheckOut>
 
   /* functions */
   void fetchDataPayment() {
-    DatabaseManager().getDefaultAddress().then((value){
+    DatabaseManager().getDefaultAddress(userID: this._userID).then((value){
       if (value != null) {
         setState(() {
           this.currentLocationName = "${value[0]['addressLineOne']}, ${value[0]['country']}";
@@ -58,7 +65,7 @@ class _ModalCheckout extends State<ModalCheckOut>
       }
     });
 
-    DatabaseManager().fetchCard().then((value){
+    DatabaseManager().fetchCard(userID: this._userID).then((value){
       if (value != null) {
         setState(() {
           this.currentCardNumber = "${value[0]['cardNumber']}";
@@ -72,7 +79,13 @@ class _ModalCheckout extends State<ModalCheckOut>
   @override
   void initState() {
     super.initState();
-    fetchDataPayment(); // get payment data
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+
+      fetchDataPayment(); // get payment data
+    });
   }
 
   @override
@@ -162,7 +175,7 @@ class _ModalCheckout extends State<ModalCheckOut>
                             if (value == true) {
                               EasyLoading.dismiss();
                               Navigator.push(context, MaterialPageRoute(builder: (context) => OrderConfirm()));
-                              await DatabaseManager().clearCart();
+                              Provider.of<BasketProvider>(context, listen: false).clearCart(userID: this._userID);
                             } else {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => OrderFailed()));
                             }

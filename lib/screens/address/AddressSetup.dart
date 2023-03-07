@@ -16,6 +16,7 @@ import 'package:food_e/requests/fetchCountries.dart';
 import 'package:food_e/widgets/SwitchGroup.dart';
 import 'package:food_e/widgets/TypeOfLocation.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class AddressSetup extends StatefulWidget
@@ -36,40 +37,46 @@ class AddressSetup extends StatefulWidget
 
 class _AddressSetupState extends State<AddressSetup> {
 
-  // current context
+  /// current context
   BuildContext ? myContext;
   final double _distanceOfInput = 30.0;
   final double heightItem   = 50.0;
 
-  // define location type in settings
+  /// define location type in settings
   bool officeSelected       = false;
   bool privateHouseSelected = true;
   bool partyPlace = false;
 
-  // define set address
+  /// define set address
   bool setDefaultAddress    = true;
   bool setPickupAddress     = false;
   bool setShippingAddress   = false;
 
-  // input controller address line 1
+  /// input controller address line 1
   TextEditingController _addressLineOne = TextEditingController();
-  // input controller address line 2
+  /// input controller address line 2
   TextEditingController _addressLineTwo = TextEditingController();
-  // input controller zipcode
+  /// input controller zipcode
   TextEditingController _zipCode = TextEditingController();
-  // input controller city
+  /// input controller city
   TextEditingController _city = TextEditingController();
 
-  // define list of country
+  /// define list of country
   String ? country;
 
-  // define list countries data
+  /// define list countries data
   List<DropdownMenuItem<String>> _countryData = [
     const DropdownMenuItem(child: Text("Select your country"), value: "")
   ];
 
-  // define address loader
+  /// define address loader
   Address ? _myAddress;
+
+  /// define userID
+  late String _userID;
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
 
   /* functions */
   void _setDefaultCallback(bool action)
@@ -102,6 +109,12 @@ class _AddressSetupState extends State<AddressSetup> {
 
   @override
   void initState() {
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+    });
+
     fetchCountries().then((value) {
       for (var item in value) {
         setState(() {
@@ -110,7 +123,7 @@ class _AddressSetupState extends State<AddressSetup> {
       }
     });
     if (this.widget.title == null) {
-      DatabaseManager().fetchAddress().then((value) {
+      DatabaseManager().fetchAddress(userID: this._userID).then((value) {
         if (value != null && value.isNotEmpty) setState(() {
           this._myAddress = value;
           this._addressLineOne.text = value.addressLineOne!;
@@ -250,7 +263,8 @@ class _AddressSetupState extends State<AddressSetup> {
                       isShipping: this.setShippingAddress,
                       isPickup: this.setPickupAddress,
                       isDefault: this.setDefaultAddress,
-                      checkOutTotalPrice: this.widget.checkOutTotalPrice
+                      checkOutTotalPrice: this.widget.checkOutTotalPrice,
+                      userID: this._userID
                   ).then((value) {
                     setState(() {
                       // refresh

@@ -10,6 +10,7 @@ import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/functions/card/card.dart';
 import 'package:food_e/widgets/SwitchGroup.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class PaymentSetup extends StatefulWidget
@@ -28,6 +29,12 @@ class PaymentSetup extends StatefulWidget
 }
 
 class _PaymentSetupState extends State<PaymentSetup> {
+
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
 
   final listCountry = const [DropdownMenuItem(child: Text("Country"),value: "Country")];
 
@@ -50,6 +57,12 @@ class _PaymentSetupState extends State<PaymentSetup> {
     Future.delayed(const Duration(seconds: 1), () => setState((){
       this._scale = 0.8;
     }));
+
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+    });
   }
 
   @override
@@ -137,7 +150,8 @@ class _PaymentSetupState extends State<PaymentSetup> {
                         expiryDate: "${this.controller.details.expiryMonth}/${this.controller.details.expiryYear}",
                         cardNumber: this.controller.details.number,
                         isDefault: this.setAsDefaultSwitch,
-                        checkOutTotalPrice: this.widget.checkOutTotalPrice
+                        checkOutTotalPrice: this.widget.checkOutTotalPrice,
+                        userID: this._userID
                     );
                   } else {
                     EasyLoading.showError("Please input validate card information");

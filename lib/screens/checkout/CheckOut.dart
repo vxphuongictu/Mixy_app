@@ -11,6 +11,7 @@ import 'package:food_e/widgets/MyText.dart';
 import 'package:food_e/widgets/MyTitle.dart';
 import 'package:food_e/core/DatabaseManager.dart';
 import 'package:provider/provider.dart';
+import 'package:food_e/core/SharedPreferencesClass.dart';
 
 
 class CheckOut extends StatefulWidget
@@ -24,27 +25,40 @@ class CheckOut extends StatefulWidget
 
 class _CheckOut extends State<CheckOut> {
 
-  // define list address
+  /// define userID
+  String _userID = "";
+
+  /// define SharedPreferencesClass
+  SharedPreferencesClass _shared = SharedPreferencesClass();
+
+  /// define list address
   String ? _typeAddress = "Please select your deliver";
   String _cardNumber = "Please select your card number";
 
   @override
   void initState() {
     super.initState();
-    DatabaseManager().fetchAddress().then((value){
-      if (value != null && value.isNotEmpty) {
-        setState(() {
-          this._typeAddress = value[0]['type'].toString();
-        });
-      }
-    });
 
-    DatabaseManager().fetchCard().then((value) {
-      if (value != null && value.isNotEmpty) {
-        setState(() {
-          this._cardNumber = value[0]['cardNumber'].toString().substring(0, value[0]['cardNumber'].length - 4) + "XXXX";
-        });
-      }
+    _shared.get_user_info().then((value) {
+      setState(() {
+        this._userID = value.userID;
+      });
+
+      DatabaseManager().fetchAddress(userID: this._userID).then((value){
+        if (value != null && value.isNotEmpty) {
+          setState(() {
+            this._typeAddress = value[0]['type'].toString();
+          });
+        }
+      });
+
+      DatabaseManager().fetchCard(userID: this._userID).then((value) {
+        if (value != null && value.isNotEmpty) {
+          setState(() {
+            this._cardNumber = value[0]['cardNumber'].toString().substring(0, value[0]['cardNumber'].length - 4) + "XXXX";
+          });
+        }
+      });
     });
   }
 

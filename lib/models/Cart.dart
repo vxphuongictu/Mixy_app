@@ -9,13 +9,15 @@ class Cart
   int productQuantity;
   String productThumbnails;
   String productPrice;
+  String userID;
 
   Cart({
     required this.productID,
     required this.productName,
     required this.productQuantity,
     required this.productThumbnails,
-    required this.productPrice
+    required this.productPrice,
+    required this.userID
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +27,7 @@ class Cart
       "productQuantity": productQuantity,
       "productThumbnails": productThumbnails,
       "productPrice": productPrice,
+      "userID": userID
     };
     return map;
   }
